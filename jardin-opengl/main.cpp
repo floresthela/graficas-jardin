@@ -11,22 +11,21 @@
 #include <iostream>
 #include <cstdlib>
 
-#define SCREEN_WIDTH 640
-#define SCREEN_HEIGHT 480
+#define SCREEN_WIDTH 1000
+#define SCREEN_HEIGHT 600
 
 void keyCallback( GLFWwindow *window, int key, int scancode, int action, int mods );
 
 void DrawTop(GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat edgeLength);
-
-void Pata1(GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat edgeLength);
-void Pata2(GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat edgeLength);
-void Pata3(GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat edgeLength);
-void Pata4(GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat edgeLength);
+void lado1(GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat edgeLength);
+void lado2(GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat edgeLength);
+void lado3(GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat edgeLength);
+void lado4(GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat edgeLength);
 
 GLfloat rotationX = 0.0f;
 GLfloat rotationY = 0.0f;
-GLfloat translationX = 0.0f;
-GLfloat translationY = 0.0f;
+//GLfloat translationX = 0.0f;
+//GLfloat translationY = 0.0f;
 GLfloat escalar = 1.0f;
 
 int main(void) {
@@ -38,7 +37,7 @@ int main(void) {
     }
     
     // Crear la ventana
-    window = glfwCreateWindow( SCREEN_WIDTH, SCREEN_HEIGHT, "Hello World", NULL, NULL );
+    window = glfwCreateWindow( SCREEN_WIDTH, SCREEN_HEIGHT, "Proyecto Final", NULL, NULL );
     
     // Declarar que se recibirán comando del teclado
     glfwSetKeyCallback( window, keyCallback );
@@ -81,7 +80,7 @@ int main(void) {
         
         glPushMatrix( );
         glTranslatef( halfScreenWidth, halfScreenHeight, -500 ); // Coloca el cubo al centro de la pantalla
-        glTranslated(translationX, translationY,0); // Mueve el cubo con las variables de las teclas (Vector de Traslación
+//        glTranslated(translationX, translationY,0); Mueve el cubo con las variables de las teclas (Vector de Traslación
         
         //Aquí se crearía el vector de escalado
         glScalef(escalar, escalar, escalar);
@@ -91,11 +90,12 @@ int main(void) {
         glTranslatef( -halfScreenWidth, -halfScreenHeight, 500 );
         
         DrawTop(halfScreenWidth, halfScreenHeight, -500, 200);
-        Pata1(halfScreenWidth, halfScreenHeight, -500, 200);
-        Pata2(halfScreenWidth, halfScreenHeight, -500, 200);
-        Pata3(halfScreenWidth, halfScreenHeight, -500, 200);
-        Pata4(halfScreenWidth, halfScreenHeight, -500, 200);
-        // dibuja las demás figuras
+        lado1(halfScreenWidth, halfScreenHeight + 40, -500, 200);
+        
+        lado2(halfScreenWidth + 220 , halfScreenHeight + 40, -500, 200);
+        lado3(halfScreenWidth, halfScreenHeight + 40, -500, 200);
+        lado3(halfScreenWidth, halfScreenHeight + 40, -280, 200);
+        
         
         glPopMatrix();
         glfwSwapBuffers( window );
@@ -130,18 +130,18 @@ void keyCallback( GLFWwindow *window, int key, int scancode, int action, int mod
             case GLFW_KEY_LEFT:
                 rotationY -= rotationSpeed;
                 break;
-            case GLFW_KEY_A:
-                translationX -= 10;
-                break;
-            case GLFW_KEY_S:
-                translationX += 10;
-                break;
-            case GLFW_KEY_W:
-                translationY += 10;
-                break;
-            case GLFW_KEY_X:
-                translationY -=10;
-                break;
+//            case GLFW_KEY_A:
+//                translationX -= 10;
+//                break;
+//            case GLFW_KEY_S:
+//                translationX += 10;
+//                break;
+//            case GLFW_KEY_W:
+//                translationY += 10;
+//                break;
+//            case GLFW_KEY_X:
+//                translationY -=10;
+//                break;
             case GLFW_KEY_1: // escalar disminuye el tamaño con la tecla del número 1
                 escalar -= 0.1;
                 break;
@@ -157,46 +157,45 @@ void keyCallback( GLFWwindow *window, int key, int scancode, int action, int mod
 
 void DrawTop( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat edgeLength )
 {
-    GLfloat halfSideLength = edgeLength * 0.5f;
-    
+    GLfloat halfSideLength = edgeLength * 0.6f;
+    int h1 = 230;
     GLfloat vertices[] =
     {
-        
         // Cara frontal
-        centerPosX - halfSideLength - 100, centerPosY + halfSideLength, centerPosZ + halfSideLength, // P1 Arriba Izquierda
-        centerPosX + halfSideLength, centerPosY + halfSideLength, centerPosZ + halfSideLength, // P2 Arriba Derecha
-        centerPosX + halfSideLength, centerPosY - halfSideLength + 180, centerPosZ + halfSideLength, // P4 Abajo Derecha
-        centerPosX - halfSideLength - 100, centerPosY - halfSideLength + 180, centerPosZ + halfSideLength, // P3 Abajo Izquierda
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h1, centerPosZ + halfSideLength, // P1
+        centerPosX + halfSideLength, centerPosY + halfSideLength - h1, centerPosZ + halfSideLength, // P2
+        centerPosX + halfSideLength, centerPosY - halfSideLength, centerPosZ + halfSideLength, // P4
+        centerPosX - halfSideLength, centerPosY - halfSideLength, centerPosZ + halfSideLength, // P3
         
         // Cara Trasera
-        centerPosX - halfSideLength - 100, centerPosY + halfSideLength, centerPosZ - halfSideLength, // P7 Arriba Izquierda
-        centerPosX + halfSideLength, centerPosY + halfSideLength, centerPosZ - halfSideLength, // P8 Arriba Derecha
-        centerPosX + halfSideLength, centerPosY - halfSideLength + 180, centerPosZ - halfSideLength, // P6 Abajo Derecha
-        centerPosX - halfSideLength - 100, centerPosY - halfSideLength + 180, centerPosZ - halfSideLength, // P5 Abajo Izquierda
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h1, centerPosZ - halfSideLength, // P7
+        centerPosX + halfSideLength, centerPosY + halfSideLength - h1, centerPosZ - halfSideLength, // P8
+        centerPosX + halfSideLength, centerPosY - halfSideLength, centerPosZ - halfSideLength, // P6
+        centerPosX - halfSideLength, centerPosY - halfSideLength, centerPosZ - halfSideLength, // P5
         
         // Cara Izquierda
-        centerPosX - halfSideLength - 100, centerPosY + halfSideLength, centerPosZ + halfSideLength, // P7 Arriba Izquierda
-        centerPosX - halfSideLength - 100, centerPosY + halfSideLength, centerPosZ - halfSideLength, // P1 Arriba Dereccha
-        centerPosX - halfSideLength - 100, centerPosY - halfSideLength + 180, centerPosZ - halfSideLength, // P3 Abajo Derecha
-        centerPosX - halfSideLength - 100, centerPosY - halfSideLength + 180, centerPosZ + halfSideLength, // P5 Abajo Izquierda
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h1, centerPosZ + halfSideLength, // P7
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h1, centerPosZ - halfSideLength, // P1
+        centerPosX - halfSideLength, centerPosY - halfSideLength, centerPosZ - halfSideLength, // P3
+        centerPosX - halfSideLength, centerPosY - halfSideLength, centerPosZ + halfSideLength, // P5
         
         // Cara Derecha
-        centerPosX + halfSideLength, centerPosY + halfSideLength, centerPosZ + halfSideLength, // P2 Arriba Izquierda
-        centerPosX + halfSideLength, centerPosY + halfSideLength, centerPosZ - halfSideLength, // P8 Arriba Derecha
-        centerPosX + halfSideLength, centerPosY - halfSideLength + 180, centerPosZ - halfSideLength, // P6 Abajo Derecha
-        centerPosX + halfSideLength, centerPosY - halfSideLength + 180, centerPosZ + halfSideLength, // P4 Abajo Izquierda
+        centerPosX + halfSideLength, centerPosY + halfSideLength - h1, centerPosZ + halfSideLength, // P2
+        centerPosX + halfSideLength, centerPosY + halfSideLength - h1, centerPosZ - halfSideLength, // P8
+        centerPosX + halfSideLength, centerPosY - halfSideLength, centerPosZ - halfSideLength, // P6
+        centerPosX + halfSideLength, centerPosY - halfSideLength, centerPosZ + halfSideLength, // P4
         
         // Cara Superior
-        centerPosX - halfSideLength - 100, centerPosY + halfSideLength, centerPosZ + halfSideLength, // P1 Arriba Izquierda
-        centerPosX - halfSideLength -100, centerPosY + halfSideLength, centerPosZ - halfSideLength, // P7 Arriba Derecha
-        centerPosX + halfSideLength, centerPosY + halfSideLength, centerPosZ - halfSideLength, // P2 Abajo Derecha
-        centerPosX + halfSideLength, centerPosY + halfSideLength, centerPosZ + halfSideLength, // P8 Abajo Izquierda
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h1, centerPosZ + halfSideLength, // P1
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h1, centerPosZ - halfSideLength, // P7
+        centerPosX + halfSideLength, centerPosY + halfSideLength - h1, centerPosZ - halfSideLength, // P2
+        centerPosX + halfSideLength, centerPosY + halfSideLength - h1, centerPosZ + halfSideLength, // P8
         
         // Cara Inferior
-        centerPosX - halfSideLength - 100, centerPosY - halfSideLength + 180, centerPosZ + halfSideLength, // P3 Arriba Izquierda
-        centerPosX - halfSideLength - 100, centerPosY - halfSideLength + 180, centerPosZ - halfSideLength, // P5 Arriba Derecha
-        centerPosX + halfSideLength, centerPosY - halfSideLength + 180, centerPosZ - halfSideLength, // P4 Abajo Derecha
-        centerPosX + halfSideLength, centerPosY - halfSideLength + 180, centerPosZ + halfSideLength  // P6 Abajo Izquierda
+        centerPosX - halfSideLength, centerPosY - halfSideLength, centerPosZ + halfSideLength, // P3
+        centerPosX - halfSideLength, centerPosY - halfSideLength, centerPosZ - halfSideLength, // P5
+        centerPosX + halfSideLength, centerPosY - halfSideLength, centerPosZ - halfSideLength, // P4
+        centerPosX + halfSideLength, centerPosY - halfSideLength, centerPosZ + halfSideLength  // P6
     };
     GLfloat colour[] = {
         255.0,0.0,0.0,
@@ -215,10 +214,11 @@ void DrawTop( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloa
         0.0, 0.0, 255.0,
         0.0, 0.0, 255.0,
         0.0, 0.0, 255.0,
-        255.0,255.0,0.0,
-        255.0,255.0,0.0,
-        255.0,255.0,0.0,
-        255.0,255.0,0.0,
+        
+        255.0,255.0,255.0,
+        255.0,255.0,255.0,
+        255.0,255.0,255.0,
+        255.0,255.0,255.0,
         255.0,255.0,255.0,
         255.0,255.0,255.0,
         255.0,255.0,255.0,
@@ -237,48 +237,48 @@ void DrawTop( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloa
     glDisableClientState(GL_COLOR_ARRAY);
 }
 
-void Pata1( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat edgeLength )
+void lado1( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat edgeLength )
 {
-    GLfloat halfSideLength = edgeLength * 0.5f;
+    GLfloat halfSideLength = edgeLength * 0.6f;
+    int h1 = -100, h2 = 240, h3 = 30;
     
     GLfloat vertices[] =
     {
-        
         // Cara frontal
-        centerPosX - halfSideLength - 100, centerPosY - halfSideLength + 180, centerPosZ + halfSideLength, // P1 Arriba Izquierda
-        centerPosX - halfSideLength - 85, centerPosY - halfSideLength + 180, centerPosZ + halfSideLength, // P2 Arriba Derecha
-        centerPosX - halfSideLength - 85, centerPosY - halfSideLength + 50, centerPosZ + halfSideLength, // P4 Abajo Derecha
-        centerPosX - halfSideLength - 100, centerPosY - halfSideLength + 50, centerPosZ + halfSideLength, // P3 Abajo Izquierda
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h2, centerPosZ + halfSideLength, // P1
+        centerPosX + h1, centerPosY + halfSideLength - h2, centerPosZ + halfSideLength, // P2
+        centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength, // P4
+        centerPosX - halfSideLength, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength, // P3
         
         // Cara Trasera
-        centerPosX - halfSideLength - 100, centerPosY - halfSideLength + 180, centerPosZ + halfSideLength - 20, // P7 Arriba Izquierda
-        centerPosX - halfSideLength - 85, centerPosY - halfSideLength + 180, centerPosZ + halfSideLength - 20, // P8 Arriba Derecha
-        centerPosX - halfSideLength - 85, centerPosY - halfSideLength + 50, centerPosZ + halfSideLength - 20, // P6 Abajo Derecha
-        centerPosX - halfSideLength - 100, centerPosY - halfSideLength + 50, centerPosZ + halfSideLength - 20, // P5 Abajo Izquierda
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h2, centerPosZ - halfSideLength, // P7
+         centerPosX + h1, centerPosY + halfSideLength - h2, centerPosZ - halfSideLength, // P8
+         centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ - halfSideLength, // P6
+        centerPosX - halfSideLength, centerPosY - halfSideLength - h3, centerPosZ - halfSideLength, // P5
         
         // Cara Izquierda
-        centerPosX - halfSideLength - 100, centerPosY - halfSideLength + 180, centerPosZ + halfSideLength - 20, // P7 Arriba Izquierda
-        centerPosX - halfSideLength - 100, centerPosY - halfSideLength + 180, centerPosZ + halfSideLength, // P1 Arriba Dereccha
-        centerPosX - halfSideLength - 100, centerPosY - halfSideLength + 50, centerPosZ + halfSideLength, // P3 Abajo Derecha
-        centerPosX - halfSideLength - 100, centerPosY - halfSideLength + 50, centerPosZ + halfSideLength - 20, // P5 Abajo Izquierda
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h2, centerPosZ + halfSideLength, // P7
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h2, centerPosZ - halfSideLength, // P1
+        centerPosX - halfSideLength, centerPosY - halfSideLength - h3, centerPosZ - halfSideLength, // P3
+        centerPosX - halfSideLength, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength, // P5
         
         // Cara Derecha
-        centerPosX - halfSideLength - 85, centerPosY - halfSideLength + 180, centerPosZ + halfSideLength, // P2 Arriba Izquierda
-        centerPosX - halfSideLength - 85, centerPosY - halfSideLength + 180, centerPosZ + halfSideLength - 20, // P8 Arriba Derecha
-        centerPosX - halfSideLength - 85, centerPosY - halfSideLength + 50, centerPosZ + halfSideLength - 20, // P6 Abajo Derecha
-        centerPosX - halfSideLength - 85, centerPosY - halfSideLength + 50, centerPosZ + halfSideLength, // P4 Abajo Izquierda
+         centerPosX + h1, centerPosY + halfSideLength - h2, centerPosZ + halfSideLength, // P2
+         centerPosX + h1, centerPosY + halfSideLength - h2, centerPosZ - halfSideLength, // P8
+         centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ - halfSideLength, // P6
+         centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength, // P4
         
         // Cara Superior
-        centerPosX - halfSideLength - 100, centerPosY - halfSideLength + 180, centerPosZ + halfSideLength, // P1 Arriba Izquierda
-        centerPosX - halfSideLength - 100, centerPosY - halfSideLength + 180, centerPosZ + halfSideLength - 20, // P7 Arriba Derecha
-        centerPosX - halfSideLength - 85, centerPosY - halfSideLength + 180, centerPosZ + halfSideLength, // P2 Abajo Derecha
-        centerPosX - halfSideLength - 85, centerPosY - halfSideLength + 180, centerPosZ + halfSideLength - 20, // P8 Abajo Izquierda
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h2, centerPosZ + halfSideLength, // P1
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h2, centerPosZ - halfSideLength, // P7
+         centerPosX + h1, centerPosY + halfSideLength - h2, centerPosZ - halfSideLength, // P2
+         centerPosX + h1, centerPosY + halfSideLength - h2, centerPosZ + halfSideLength, // P8
         
         // Cara Inferior
-        centerPosX - halfSideLength - 100, centerPosY - halfSideLength + 50, centerPosZ + halfSideLength, // P3 Arriba Izquierda
-        centerPosX - halfSideLength - 100, centerPosY - halfSideLength + 50, centerPosZ + halfSideLength - 20, // P5 Arriba Derecha
-        centerPosX - halfSideLength - 85, centerPosY - halfSideLength + 50, centerPosZ + halfSideLength, // P4 Abajo Derecha
-        centerPosX - halfSideLength - 85, centerPosY - halfSideLength + 50, centerPosZ + halfSideLength - 20 // P6 Abajo Izquierda
+        centerPosX - halfSideLength, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength, // P3
+        centerPosX - halfSideLength, centerPosY - halfSideLength - h3, centerPosZ - halfSideLength, // P5
+         centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ - halfSideLength, // P4
+         centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength  // P6
     };
     GLfloat colour[] = {
         255.0,0.0,0.0,
@@ -297,10 +297,11 @@ void Pata1( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat 
         0.0, 0.0, 255.0,
         0.0, 0.0, 255.0,
         0.0, 0.0, 255.0,
-        255.0,255.0,0.0,
-        255.0,255.0,0.0,
-        255.0,255.0,0.0,
-        255.0,255.0,0.0,
+        
+        255.0,255.0,255.0,
+        255.0,255.0,255.0,
+        255.0,255.0,255.0,
+        255.0,255.0,255.0,
         255.0,255.0,255.0,
         255.0,255.0,255.0,
         255.0,255.0,255.0,
@@ -320,48 +321,48 @@ void Pata1( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat 
 }
 
 
-void Pata2( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat edgeLength )
+void lado2( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat edgeLength )
 {
-    GLfloat halfSideLength = edgeLength * 0.5f;
+    GLfloat halfSideLength = edgeLength * 0.6f;
+    int h1 = -100, h2 = 240, h3 = 30;
     
     GLfloat vertices[] =
     {
-        
         // Cara frontal
-        centerPosX - halfSideLength - 100, centerPosY - halfSideLength + 180, centerPosZ - halfSideLength + 20, // P1 Arriba Izquierda
-        centerPosX - halfSideLength - 85, centerPosY - halfSideLength + 180, centerPosZ - halfSideLength + 20, // P2 Arriba Derecha
-        centerPosX - halfSideLength - 85, centerPosY - halfSideLength + 50, centerPosZ - halfSideLength + 20, // P4 Abajo Derecha
-        centerPosX - halfSideLength - 100, centerPosY - halfSideLength + 50, centerPosZ - halfSideLength + 20, // P3 Abajo Izquierda
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h2, centerPosZ + halfSideLength, // P1
+        centerPosX + h1, centerPosY + halfSideLength - h2, centerPosZ + halfSideLength, // P2
+        centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength, // P4
+        centerPosX - halfSideLength, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength, // P3
         
         // Cara Trasera
-        centerPosX - halfSideLength - 100, centerPosY - halfSideLength + 180, centerPosZ - halfSideLength, // P7 Arriba Izquierda
-        centerPosX - halfSideLength - 85, centerPosY - halfSideLength + 180, centerPosZ - halfSideLength, // P8 Arriba Derecha
-        centerPosX - halfSideLength - 85, centerPosY - halfSideLength + 50, centerPosZ - halfSideLength, // P6 Abajo Derecha
-        centerPosX - halfSideLength - 100, centerPosY - halfSideLength + 50, centerPosZ - halfSideLength, // P5 Abajo Izquierda
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h2, centerPosZ - halfSideLength, // P7
+        centerPosX + h1, centerPosY + halfSideLength - h2, centerPosZ - halfSideLength, // P8
+        centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ - halfSideLength, // P6
+        centerPosX - halfSideLength, centerPosY - halfSideLength - h3, centerPosZ - halfSideLength, // P5
         
         // Cara Izquierda
-        centerPosX - halfSideLength - 100, centerPosY - halfSideLength + 180, centerPosZ - halfSideLength, // P7 Arriba Izquierda
-        centerPosX - halfSideLength - 100, centerPosY - halfSideLength + 180, centerPosZ - halfSideLength + 20, // P1 Arriba Dereccha
-        centerPosX - halfSideLength - 100, centerPosY - halfSideLength + 50, centerPosZ - halfSideLength + 20, // P3 Abajo Derecha
-        centerPosX - halfSideLength - 100, centerPosY - halfSideLength + 50, centerPosZ - halfSideLength, // P5 Abajo Izquierda
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h2, centerPosZ + halfSideLength, // P7
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h2, centerPosZ - halfSideLength, // P1
+        centerPosX - halfSideLength, centerPosY - halfSideLength - h3, centerPosZ - halfSideLength, // P3
+        centerPosX - halfSideLength, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength, // P5
         
         // Cara Derecha
-        centerPosX - halfSideLength - 85, centerPosY - halfSideLength + 180, centerPosZ - halfSideLength + 20, // P2 Arriba Izquierda
-        centerPosX - halfSideLength - 85, centerPosY - halfSideLength + 180, centerPosZ - halfSideLength, // P8 Arriba Derecha
-        centerPosX - halfSideLength - 85, centerPosY - halfSideLength + 50, centerPosZ - halfSideLength, // P6 Abajo Derecha
-        centerPosX - halfSideLength - 85, centerPosY - halfSideLength + 50, centerPosZ - halfSideLength + 20, // P4 Abajo Izquierda
+        centerPosX + h1, centerPosY + halfSideLength - h2, centerPosZ + halfSideLength, // P2
+        centerPosX + h1, centerPosY + halfSideLength - h2, centerPosZ - halfSideLength, // P8
+        centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ - halfSideLength, // P6
+        centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength, // P4
         
         // Cara Superior
-        centerPosX - halfSideLength - 100, centerPosY - halfSideLength + 180, centerPosZ - halfSideLength + 20, // P1 Arriba Izquierda
-        centerPosX - halfSideLength - 100, centerPosY - halfSideLength + 180, centerPosZ - halfSideLength, // P7 Arriba Derecha
-        centerPosX - halfSideLength - 85, centerPosY - halfSideLength + 180, centerPosZ - halfSideLength + 20, // P2 Abajo Derecha
-        centerPosX - halfSideLength - 85, centerPosY - halfSideLength + 180, centerPosZ - halfSideLength, // P8 Abajo Izquierda
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h2, centerPosZ + halfSideLength, // P1
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h2, centerPosZ - halfSideLength, // P7
+        centerPosX + h1, centerPosY + halfSideLength - h2, centerPosZ - halfSideLength, // P2
+        centerPosX + h1, centerPosY + halfSideLength - h2, centerPosZ + halfSideLength, // P8
         
         // Cara Inferior
-        centerPosX - halfSideLength - 100, centerPosY - halfSideLength + 50, centerPosZ - halfSideLength + 20, // P3 Arriba Izquierda
-        centerPosX - halfSideLength - 100, centerPosY - halfSideLength + 50, centerPosZ - halfSideLength, // P5 Arriba Derecha
-        centerPosX - halfSideLength - 85, centerPosY - halfSideLength + 50, centerPosZ - halfSideLength + 20, // P4 Abajo Derecha
-        centerPosX - halfSideLength - 85, centerPosY - halfSideLength + 50, centerPosZ - halfSideLength // P6 Abajo Izquierda
+        centerPosX - halfSideLength, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength, // P3
+        centerPosX - halfSideLength, centerPosY - halfSideLength - h3, centerPosZ - halfSideLength, // P5
+        centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ - halfSideLength, // P4
+        centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength  // P6
     };
     GLfloat colour[] = {
         255.0,0.0,0.0,
@@ -380,10 +381,11 @@ void Pata2( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat 
         0.0, 0.0, 255.0,
         0.0, 0.0, 255.0,
         0.0, 0.0, 255.0,
-        255.0,255.0,0.0,
-        255.0,255.0,0.0,
-        255.0,255.0,0.0,
-        255.0,255.0,0.0,
+        
+        255.0,255.0,255.0,
+        255.0,255.0,255.0,
+        255.0,255.0,255.0,
+        255.0,255.0,255.0,
         255.0,255.0,255.0,
         255.0,255.0,255.0,
         255.0,255.0,255.0,
@@ -402,48 +404,48 @@ void Pata2( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat 
     glDisableClientState(GL_COLOR_ARRAY);
 }
 
-void Pata3( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat edgeLength )
+void lado3( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat edgeLength )
 {
-    GLfloat halfSideLength = edgeLength * 0.5f;
+    GLfloat halfSideLength = edgeLength * 0.6f;
+    int h1 = 120, h2 = 240, h3 = 30, z1 = 220, x1 = 100;
     
     GLfloat vertices[] =
     {
-        
         // Cara frontal
-        centerPosX + halfSideLength - 15, centerPosY - halfSideLength + 180, centerPosZ - halfSideLength + 20, // P1 Arriba Izquierda
-        centerPosX + halfSideLength, centerPosY - halfSideLength + 180, centerPosZ - halfSideLength + 20, // P2 Arriba Derecha
-        centerPosX + halfSideLength, centerPosY - halfSideLength + 50, centerPosZ - halfSideLength + 20,  // P4 Abajo Derecha
-        centerPosX + halfSideLength - 15, centerPosY - halfSideLength + 50, centerPosZ - halfSideLength + 20, // P3 Abajo Izquierda
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h2, centerPosZ + halfSideLength - z1, // P1
+        centerPosX + h1, centerPosY + halfSideLength - h2, centerPosZ + halfSideLength - z1, // P2
+        centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength - z1, // P4
+        centerPosX - halfSideLength, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength - z1, // P3
         
         // Cara Trasera
-        centerPosX + halfSideLength - 15, centerPosY - halfSideLength + 180, centerPosZ - halfSideLength, // P7 Arriba Izquierda
-        centerPosX + halfSideLength, centerPosY - halfSideLength + 180, centerPosZ - halfSideLength, // P8 Arriba Derecha
-        centerPosX + halfSideLength, centerPosY - halfSideLength + 50, centerPosZ - halfSideLength, // P6 Abajo Derecha
-        centerPosX + halfSideLength - 15, centerPosY - halfSideLength + 50, centerPosZ - halfSideLength, // P5 Abajo Izquierda
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h2, centerPosZ - halfSideLength, // P7
+        centerPosX + h1, centerPosY + halfSideLength - h2, centerPosZ - halfSideLength, // P8
+        centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ - halfSideLength, // P6
+        centerPosX - halfSideLength, centerPosY - halfSideLength - h3, centerPosZ - halfSideLength, // P5
         
         // Cara Izquierda
-        centerPosX + halfSideLength - 15, centerPosY - halfSideLength + 180, centerPosZ - halfSideLength, // P7 Arriba Izquierda
-        centerPosX + halfSideLength - 15, centerPosY - halfSideLength + 180, centerPosZ - halfSideLength + 20, // P1 Arriba Dereccha
-        centerPosX + halfSideLength - 15, centerPosY - halfSideLength + 50, centerPosZ - halfSideLength + 20, // P3 Abajo Derecha
-        centerPosX + halfSideLength - 15, centerPosY - halfSideLength + 50, centerPosZ - halfSideLength, // P5 Abajo Izquierda
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h2, centerPosZ + halfSideLength - z1, // P7 ... P1
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h2, centerPosZ - halfSideLength, // P1 o P7
+        centerPosX - halfSideLength, centerPosY - halfSideLength - h3, centerPosZ - halfSideLength, // P3 -> P5
+        centerPosX - halfSideLength, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength - z1, // P5 -> P3
         
         // Cara Derecha
-        centerPosX + halfSideLength, centerPosY - halfSideLength + 180, centerPosZ - halfSideLength + 20, // P2 Arriba Izquierda
-        centerPosX + halfSideLength, centerPosY - halfSideLength + 180, centerPosZ - halfSideLength, // P8 Arriba Derecha
-        centerPosX + halfSideLength, centerPosY - halfSideLength + 50, centerPosZ - halfSideLength, // P6 Abajo Derecha
-        centerPosX + halfSideLength, centerPosY - halfSideLength + 50, centerPosZ - halfSideLength + 20, // P4 Abajo Izquierda
+        centerPosX + h1, centerPosY + halfSideLength - h2, centerPosZ + halfSideLength - z1, // P2
+        centerPosX + h1, centerPosY + halfSideLength - h2, centerPosZ - halfSideLength, // P8
+        centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ - halfSideLength, // P6
+        centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength - z1, // P4
         
         // Cara Superior
-        centerPosX + halfSideLength - 15, centerPosY - halfSideLength + 180, centerPosZ - halfSideLength + 20, // P1 Arriba Izquierda
-        centerPosX + halfSideLength - 15, centerPosY - halfSideLength + 180, centerPosZ - halfSideLength, // P7 Arriba Derecha
-        centerPosX + halfSideLength, centerPosY - halfSideLength + 180, centerPosZ - halfSideLength + 20, // P2 Abajo Derecha
-        centerPosX + halfSideLength, centerPosY - halfSideLength + 180, centerPosZ - halfSideLength, // P8 Abajo Izquierda
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h2, centerPosZ + halfSideLength - z1, // P1
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h2, centerPosZ - halfSideLength, // P7
+        centerPosX + h1, centerPosY + halfSideLength - h2, centerPosZ - halfSideLength, // P2 ... P8
+        centerPosX + h1, centerPosY + halfSideLength - h2, centerPosZ + halfSideLength - z1, // P8 ... P2
         
         // Cara Inferior
-        centerPosX + halfSideLength - 15, centerPosY - halfSideLength + 50, centerPosZ - halfSideLength + 20, // P3 Arriba Izquierda
-        centerPosX + halfSideLength - 15, centerPosY - halfSideLength + 50, centerPosZ - halfSideLength, // P5 Arriba Derecha
-        centerPosX + halfSideLength, centerPosY - halfSideLength + 50, centerPosZ - halfSideLength + 20,  // P4 Abajo Derecha
-        centerPosX + halfSideLength, centerPosY - halfSideLength + 50, centerPosZ - halfSideLength // P6 Abajo Izquierda
+        centerPosX - halfSideLength, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength - z1, // P3
+        centerPosX - halfSideLength, centerPosY - halfSideLength - h3, centerPosZ - halfSideLength, // P5
+        centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ - halfSideLength, // P4
+        centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength - z1  // P6
     };
     GLfloat colour[] = {
         255.0,0.0,0.0,
@@ -462,10 +464,11 @@ void Pata3( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat 
         0.0, 0.0, 255.0,
         0.0, 0.0, 255.0,
         0.0, 0.0, 255.0,
-        255.0,255.0,0.0,
-        255.0,255.0,0.0,
-        255.0,255.0,0.0,
-        255.0,255.0,0.0,
+        
+        255.0,255.0,255.0,
+        255.0,255.0,255.0,
+        255.0,255.0,255.0,
+        255.0,255.0,255.0,
         255.0,255.0,255.0,
         255.0,255.0,255.0,
         255.0,255.0,255.0,
@@ -484,48 +487,48 @@ void Pata3( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat 
     glDisableClientState(GL_COLOR_ARRAY);
 }
 
-void Pata4( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat edgeLength )
+void lado4( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat edgeLength )
 {
-    GLfloat halfSideLength = edgeLength * 0.5f;
+    GLfloat halfSideLength = edgeLength * 0.6f;
+    int h1 = 120, h2 = 240, h3 = 30, z1 = 220, x1 = 100;
     
     GLfloat vertices[] =
     {
-        
         // Cara frontal
-        centerPosX + halfSideLength - 15, centerPosY - halfSideLength + 180, centerPosZ + halfSideLength, // P1 Arriba Izquierda
-        centerPosX + halfSideLength, centerPosY - halfSideLength + 180, centerPosZ + halfSideLength,  // P2 Arriba Derecha
-        centerPosX + halfSideLength, centerPosY - halfSideLength + 50, centerPosZ + halfSideLength, // P4 Abajo Derecha
-        centerPosX + halfSideLength - 15, centerPosY - halfSideLength + 50, centerPosZ + halfSideLength, // P3 Abajo Izquierda
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h2, centerPosZ + halfSideLength - z1, // P1
+        centerPosX + h1, centerPosY + halfSideLength - h2, centerPosZ + halfSideLength - z1, // P2
+        centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength - z1, // P4
+        centerPosX - halfSideLength, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength - z1, // P3
         
         // Cara Trasera
-        centerPosX + halfSideLength - 15, centerPosY - halfSideLength + 180, centerPosZ + halfSideLength - 20,  // P7 Arriba Izquierda
-        centerPosX + halfSideLength, centerPosY - halfSideLength + 180, centerPosZ + halfSideLength - 20,  // P8 Arriba Derecha
-        centerPosX + halfSideLength, centerPosY - halfSideLength + 50, centerPosZ + halfSideLength - 20,  // P6 Abajo Derecha
-        centerPosX + halfSideLength - 15, centerPosY - halfSideLength + 50, centerPosZ + halfSideLength - 20, // P5 Abajo Izquierda
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h2, centerPosZ - halfSideLength, // P7
+        centerPosX + h1, centerPosY + halfSideLength - h2, centerPosZ - halfSideLength, // P8
+        centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ - halfSideLength, // P6
+        centerPosX - halfSideLength, centerPosY - halfSideLength - h3, centerPosZ - halfSideLength, // P5
         
         // Cara Izquierda
-        centerPosX + halfSideLength - 15, centerPosY - halfSideLength + 180, centerPosZ + halfSideLength - 20, // P7 Arriba Izquierda
-        centerPosX + halfSideLength - 15, centerPosY - halfSideLength + 180, centerPosZ + halfSideLength, // P1 Arriba Dereccha
-        centerPosX + halfSideLength - 15, centerPosY - halfSideLength + 50, centerPosZ + halfSideLength, // P3 Abajo Derecha
-        centerPosX + halfSideLength - 15, centerPosY - halfSideLength + 50, centerPosZ + halfSideLength - 20, // P5 Abajo Izquierda
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h2, centerPosZ + halfSideLength - z1, // P7 ... P1
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h2, centerPosZ - halfSideLength, // P1 o P7
+        centerPosX - halfSideLength, centerPosY - halfSideLength - h3, centerPosZ - halfSideLength, // P3 -> P5
+        centerPosX - halfSideLength, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength - z1, // P5 -> P3
         
         // Cara Derecha
-        centerPosX + halfSideLength, centerPosY - halfSideLength + 180, centerPosZ + halfSideLength,  // P2 Arriba Izquierda
-        centerPosX + halfSideLength, centerPosY - halfSideLength + 180, centerPosZ + halfSideLength - 20, // P8 Arriba Derecha
-        centerPosX + halfSideLength, centerPosY - halfSideLength + 50, centerPosZ + halfSideLength - 20,  // P6 Abajo Derecha
-        centerPosX + halfSideLength, centerPosY - halfSideLength + 50, centerPosZ + halfSideLength,  // P4 Abajo Izquierda
+        centerPosX + h1, centerPosY + halfSideLength - h2, centerPosZ + halfSideLength - z1, // P2
+        centerPosX + h1, centerPosY + halfSideLength - h2, centerPosZ - halfSideLength, // P8
+        centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ - halfSideLength, // P6
+        centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength - z1, // P4
         
         // Cara Superior
-        centerPosX + halfSideLength - 15, centerPosY - halfSideLength + 180, centerPosZ + halfSideLength, // P1 Arriba Izquierda
-        centerPosX + halfSideLength - 15, centerPosY - halfSideLength + 180, centerPosZ + halfSideLength - 20, // P7 Arriba Derecha
-        centerPosX + halfSideLength, centerPosY - halfSideLength + 180, centerPosZ + halfSideLength,  // P2 Abajo Derecha
-        centerPosX + halfSideLength, centerPosY - halfSideLength + 180, centerPosZ + halfSideLength - 20, // P8 Abajo Izquierda
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h2, centerPosZ + halfSideLength - z1, // P1
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h2, centerPosZ - halfSideLength, // P7
+        centerPosX + h1, centerPosY + halfSideLength - h2, centerPosZ - halfSideLength, // P2 ... P8
+        centerPosX + h1, centerPosY + halfSideLength - h2, centerPosZ + halfSideLength - z1, // P8 ... P2
         
         // Cara Inferior
-        centerPosX + halfSideLength - 15, centerPosY - halfSideLength + 50, centerPosZ + halfSideLength, // P3 Arriba Izquierda
-        centerPosX + halfSideLength - 15, centerPosY - halfSideLength + 50, centerPosZ + halfSideLength - 20, // P5 Arriba Derecha
-        centerPosX + halfSideLength, centerPosY - halfSideLength + 50, centerPosZ + halfSideLength,  // P4 Abajo Derecha
-        centerPosX + halfSideLength, centerPosY - halfSideLength + 50, centerPosZ + halfSideLength - 20  // P6 Abajo Izquierda
+        centerPosX - halfSideLength, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength - z1, // P3
+        centerPosX - halfSideLength, centerPosY - halfSideLength - h3, centerPosZ - halfSideLength, // P5
+        centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ - halfSideLength, // P4
+        centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength - z1  // P6
     };
     GLfloat colour[] = {
         255.0,0.0,0.0,
@@ -544,10 +547,11 @@ void Pata4( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat 
         0.0, 0.0, 255.0,
         0.0, 0.0, 255.0,
         0.0, 0.0, 255.0,
-        255.0,255.0,0.0,
-        255.0,255.0,0.0,
-        255.0,255.0,0.0,
-        255.0,255.0,0.0,
+        
+        255.0,255.0,255.0,
+        255.0,255.0,255.0,
+        255.0,255.0,255.0,
+        255.0,255.0,255.0,
         255.0,255.0,255.0,
         255.0,255.0,255.0,
         255.0,255.0,255.0,
@@ -565,4 +569,3 @@ void Pata4( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat 
     glDisableClientState( GL_VERTEX_ARRAY );
     glDisableClientState(GL_COLOR_ARRAY);
 }
-

@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		29D1EB88246A063F005694E5 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29D1EB87246A063F005694E5 /* main.cpp */; };
+		29D1EB90246A06D7005694E5 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29D1EB8F246A06D7005694E5 /* OpenGL.framework */; };
+		29D1EB92246A06DC005694E5 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29D1EB91246A06DC005694E5 /* GLUT.framework */; };
+		29D1EB94246A06ED005694E5 /* libGLEW.2.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 29D1EB93246A06ED005694E5 /* libGLEW.2.1.0.dylib */; };
+		29D1EB96246A06FB005694E5 /* libglfw.3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 29D1EB95246A06FB005694E5 /* libglfw.3.3.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +29,10 @@
 /* Begin PBXFileReference section */
 		29D1EB84246A063F005694E5 /* jardin-opengl */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "jardin-opengl"; sourceTree = BUILT_PRODUCTS_DIR; };
 		29D1EB87246A063F005694E5 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		29D1EB8F246A06D7005694E5 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		29D1EB91246A06DC005694E5 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		29D1EB93246A06ED005694E5 /* libGLEW.2.1.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libGLEW.2.1.0.dylib; path = ../../../../../../../usr/local/Cellar/glew/2.1.0_1/lib/libGLEW.2.1.0.dylib; sourceTree = "<group>"; };
+		29D1EB95246A06FB005694E5 /* libglfw.3.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.3.dylib; path = ../../../../../../../usr/local/Cellar/glfw/3.3.2/lib/libglfw.3.3.dylib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +40,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29D1EB96246A06FB005694E5 /* libglfw.3.3.dylib in Frameworks */,
+				29D1EB94246A06ED005694E5 /* libGLEW.2.1.0.dylib in Frameworks */,
+				29D1EB92246A06DC005694E5 /* GLUT.framework in Frameworks */,
+				29D1EB90246A06D7005694E5 /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,6 +55,7 @@
 			children = (
 				29D1EB86246A063F005694E5 /* jardin-opengl */,
 				29D1EB85246A063F005694E5 /* Products */,
+				29D1EB8E246A06D7005694E5 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -60,6 +73,17 @@
 				29D1EB87246A063F005694E5 /* main.cpp */,
 			);
 			path = "jardin-opengl";
+			sourceTree = "<group>";
+		};
+		29D1EB8E246A06D7005694E5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				29D1EB95246A06FB005694E5 /* libglfw.3.3.dylib */,
+				29D1EB93246A06ED005694E5 /* libGLEW.2.1.0.dylib */,
+				29D1EB91246A06DC005694E5 /* GLUT.framework */,
+				29D1EB8F246A06D7005694E5 /* OpenGL.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -238,6 +262,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				HEADER_SEARCH_PATHS = (
+					/usr/local/Cellar/glew/2.1.0_1/include,
+					/usr/local/Cellar/glfw/3.3.2/include,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/glew/2.1.0_1/lib,
+					/usr/local/Cellar/glfw/3.3.2/lib,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -246,6 +279,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				HEADER_SEARCH_PATHS = (
+					/usr/local/Cellar/glew/2.1.0_1/include,
+					/usr/local/Cellar/glfw/3.3.2/include,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/glew/2.1.0_1/lib,
+					/usr/local/Cellar/glfw/3.3.2/lib,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
