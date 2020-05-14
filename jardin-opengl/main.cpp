@@ -16,11 +16,14 @@
 
 void keyCallback( GLFWwindow *window, int key, int scancode, int action, int mods );
 
-void DrawTop(GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat edgeLength);
+// figuras para la fuente
+void base(GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat edgeLength);
 void lado1(GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat edgeLength);
 void lado2(GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat edgeLength);
 void lado3(GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat edgeLength);
 void lado4(GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat edgeLength);
+void centro(GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat edgeLength);
+void top(GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat edgeLength);
 
 GLfloat rotationX = 0.0f;
 GLfloat rotationY = 0.0f;
@@ -89,12 +92,15 @@ int main(void) {
         glRotatef( rotationY, 0, 1, 0 ); // Rotar el cubo en Y
         glTranslatef( -halfScreenWidth, -halfScreenHeight, 500 );
         
-        DrawTop(halfScreenWidth, halfScreenHeight, -500, 200);
+        base(halfScreenWidth, halfScreenHeight, -500, 200);
         lado1(halfScreenWidth, halfScreenHeight + 40, -500, 200);
         
         lado2(halfScreenWidth + 220 , halfScreenHeight + 40, -500, 200);
         lado3(halfScreenWidth, halfScreenHeight + 40, -500, 200);
         lado3(halfScreenWidth, halfScreenHeight + 40, -280, 200);
+        
+        centro(halfScreenWidth + 95, halfScreenHeight, -400, 200);
+        top(halfScreenWidth + 170, halfScreenHeight + 50, -440, 200);
         
         
         glPopMatrix();
@@ -155,7 +161,7 @@ void keyCallback( GLFWwindow *window, int key, int scancode, int action, int mod
 }
 
 
-void DrawTop( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat edgeLength )
+void base( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat edgeLength )
 {
     GLfloat halfSideLength = edgeLength * 0.6f;
     int h1 = 230;
@@ -556,6 +562,178 @@ void lado4( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat 
         255.0,255.0,255.0,
         255.0,255.0,255.0,
         255.0,255.0,255.0,
+    };
+    
+    //    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+    glEnable(GL_DEPTH_TEST); //Agregar la proyección de profundidad
+    glDepthMask(GL_TRUE);//Agregar la proyección de profundidad
+    glEnableClientState( GL_VERTEX_ARRAY );
+    glEnableClientState(GL_COLOR_ARRAY);
+    glVertexPointer( 3, GL_FLOAT, 0, vertices );
+    glColorPointer(3, GL_FLOAT, 0, colour); //Buffer de color
+    glDrawArrays( GL_QUADS, 0, 24 );
+    glDisableClientState( GL_VERTEX_ARRAY );
+    glDisableClientState(GL_COLOR_ARRAY);
+}
+
+void centro( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat edgeLength )
+{
+    GLfloat halfSideLength = edgeLength * 0.6f;
+    int h1 = -80, h2 = 30, h3 = 0, z1 = 200, x1 = 0;
+    
+    GLfloat vertices[] =
+    {
+        // Cara frontal
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h2, centerPosZ + halfSideLength - z1, // P1
+        centerPosX + h1, centerPosY + halfSideLength - h2, centerPosZ + halfSideLength - z1, // P2
+        centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength - z1, // P4
+        centerPosX - halfSideLength, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength - z1, // P3
+        
+        // Cara Trasera
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h2, centerPosZ - halfSideLength, // P7
+        centerPosX + h1, centerPosY + halfSideLength - h2, centerPosZ - halfSideLength, // P8
+        centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ - halfSideLength, // P6
+        centerPosX - halfSideLength, centerPosY - halfSideLength - h3, centerPosZ - halfSideLength, // P5
+        
+        // Cara Izquierda
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h2, centerPosZ + halfSideLength - z1, // P7 ... P1
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h2, centerPosZ - halfSideLength, // P1 o P7
+        centerPosX - halfSideLength, centerPosY - halfSideLength - h3, centerPosZ - halfSideLength, // P3 -> P5
+        centerPosX - halfSideLength, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength - z1, // P5 -> P3
+        
+        // Cara Derecha
+        centerPosX + h1, centerPosY + halfSideLength - h2, centerPosZ + halfSideLength - z1, // P2
+        centerPosX + h1, centerPosY + halfSideLength - h2, centerPosZ - halfSideLength, // P8
+        centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ - halfSideLength, // P6
+        centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength - z1, // P4
+        
+        // Cara Superior
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h2, centerPosZ + halfSideLength - z1, // P1
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h2, centerPosZ - halfSideLength, // P7
+        centerPosX + h1, centerPosY + halfSideLength - h2, centerPosZ - halfSideLength, // P2 ... P8
+        centerPosX + h1, centerPosY + halfSideLength - h2, centerPosZ + halfSideLength - z1, // P8 ... P2
+        
+        // Cara Inferior
+        centerPosX - halfSideLength, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength - z1, // P3
+        centerPosX - halfSideLength, centerPosY - halfSideLength - h3, centerPosZ - halfSideLength, // P5
+        centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ - halfSideLength, // P4
+        centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength - z1  // P6
+    };
+    GLfloat colour[] = {
+        255.0,255.0,0,
+        255.0,255.0,0,
+        255.0,255.0,0,
+        255.0,255.0,0,
+        255.0,255.0,0,
+        255.0,255.0,0,
+        255.0,255.0,0,
+        255.0,255.0,0,
+        255.0,255.0,0,
+        255.0,255.0,0,
+        255.0,255.0,0,
+        255.0,255.0,0,
+        255.0,255.0,0,
+        255.0,255.0,0,
+        255.0,255.0,0,
+        255.0,255.0,0,
+        
+        255.0,255.0,0,
+        255.0,255.0,0,
+        255.0,255.0,0,
+        255.0,255.0,0,
+        255.0,255.0,0,
+        255.0,255.0,0,
+        255.0,255.0,0,
+        255.0,255.0,0,
+    };
+    
+    //    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+    glEnable(GL_DEPTH_TEST); //Agregar la proyección de profundidad
+    glDepthMask(GL_TRUE);//Agregar la proyección de profundidad
+    glEnableClientState( GL_VERTEX_ARRAY );
+    glEnableClientState(GL_COLOR_ARRAY);
+    glVertexPointer( 3, GL_FLOAT, 0, vertices );
+    glColorPointer(3, GL_FLOAT, 0, colour); //Buffer de color
+    glDrawArrays( GL_QUADS, 0, 24 );
+    glDisableClientState( GL_VERTEX_ARRAY );
+    glDisableClientState(GL_COLOR_ARRAY);
+}
+
+void top( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat edgeLength )
+{
+    GLfloat halfSideLength = edgeLength * 0.6f;
+    int h1 = -230, h2 = 140, h3 = -90, z1 = 120, x1 = 0;
+    
+    
+    // h1 sube z1 baja
+    GLfloat vertices[] =
+    {
+        // Cara frontal
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h2, centerPosZ + halfSideLength - z1, // P1
+        centerPosX + h1, centerPosY + halfSideLength - h2, centerPosZ + halfSideLength - z1, // P2
+        centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength - z1, // P4
+        centerPosX - halfSideLength, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength - z1, // P3
+        
+        // Cara Trasera
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h2, centerPosZ - halfSideLength, // P7
+        centerPosX + h1, centerPosY + halfSideLength - h2, centerPosZ - halfSideLength, // P8
+        centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ - halfSideLength, // P6
+        centerPosX - halfSideLength, centerPosY - halfSideLength - h3, centerPosZ - halfSideLength, // P5
+        
+        // Cara Izquierda
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h2, centerPosZ + halfSideLength - z1, // P7 ... P1
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h2, centerPosZ - halfSideLength, // P1 o P7
+        centerPosX - halfSideLength, centerPosY - halfSideLength - h3, centerPosZ - halfSideLength, // P3 -> P5
+        centerPosX - halfSideLength, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength - z1, // P5 -> P3
+        
+        // Cara Derecha
+        centerPosX + h1, centerPosY + halfSideLength - h2, centerPosZ + halfSideLength - z1, // P2
+        centerPosX + h1, centerPosY + halfSideLength - h2, centerPosZ - halfSideLength, // P8
+        centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ - halfSideLength, // P6
+        centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength - z1, // P4
+        
+        // Cara Superior
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h2, centerPosZ + halfSideLength - z1, // P1
+        centerPosX - halfSideLength, centerPosY + halfSideLength - h2, centerPosZ - halfSideLength, // P7
+        centerPosX + h1, centerPosY + halfSideLength - h2, centerPosZ - halfSideLength, // P2 ... P8
+        centerPosX + h1, centerPosY + halfSideLength - h2, centerPosZ + halfSideLength - z1, // P8 ... P2
+        
+        // Cara Inferior
+        centerPosX - halfSideLength, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength - z1, // P3
+        centerPosX - halfSideLength, centerPosY - halfSideLength - h3, centerPosZ - halfSideLength, // P5
+        centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ - halfSideLength, // P4
+        centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength - z1  // P6
+    };
+    GLfloat colour[] = {
+        255.0,255.0,0,
+        255.0,255.0,0,
+        255.0,255.0,0,
+        255.0,255.0,0,
+        
+        255.0,0,0,
+        255.0,0,0,
+        255.0,0,0,
+        255.0,0,0,
+        
+        0,255.0,0,
+        0,255.0,0,
+        0,255.0,0,
+        0,255.0,0,
+        
+        0,0,255.0,
+        0,0,255.0,
+        0,0,255.0,
+        0,0,255.0,
+        
+        0,0,255.0,
+        0,0,255.0,
+        0,0,255.0,
+        0,0,255.0,
+        
+        255.0,255.0,0,
+        255.0,255.0,0,
+        255.0,255.0,0,
+        255.0,255.0,0,
     };
     
     //    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
