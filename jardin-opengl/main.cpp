@@ -11,7 +11,7 @@
 #include <iostream>
 #include <cstdlib>
 
-#define SCREEN_WIDTH 1000
+#define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 600
 
 void keyCallback( GLFWwindow *window, int key, int scancode, int action, int mods );
@@ -24,6 +24,8 @@ void lado3(GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat e
 void lado4(GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat edgeLength);
 void centro(GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat edgeLength);
 void top(GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat edgeLength);
+
+void piso(GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat edgeLength);
 
 GLfloat rotationX = 0.0f;
 GLfloat rotationY = 0.0f;
@@ -76,16 +78,12 @@ int main(void) {
     // Loop en donde se estará dibujando la ventana
     while ( !glfwWindowShouldClose( window ) )
     {
-        glClear( GL_COLOR_BUFFER_BIT );
+        glClear(GL_COLOR_BUFFER_BIT);
         glClear(GL_DEPTH_BUFFER_BIT);
         
         // Render (Se crea el cubo y se generan los cambios en los vectores de transformación
-        
-        glPushMatrix( );
-        glTranslatef( halfScreenWidth, halfScreenHeight, -500 ); // Coloca el cubo al centro de la pantalla
-//        glTranslated(translationX, translationY,0); Mueve el cubo con las variables de las teclas (Vector de Traslación
-        
-        //Aquí se crearía el vector de escalado
+        glPushMatrix();
+        glTranslatef(halfScreenWidth, halfScreenHeight, -500);
         glScalef(escalar, escalar, escalar);
         
         glRotatef( rotationX, 1, 0, 0 ); // Rotar el cubo en X
@@ -101,6 +99,8 @@ int main(void) {
         
         centro(halfScreenWidth + 95, halfScreenHeight, -400, 200);
         top(halfScreenWidth + 170, halfScreenHeight + 50, -440, 200);
+        
+        piso(halfScreenWidth, halfScreenHeight + 880, -500, 200);
         
         
         glPopMatrix();
@@ -737,6 +737,94 @@ void top( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat ed
     };
     
     //    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+    glEnable(GL_DEPTH_TEST); //Agregar la proyección de profundidad
+    glDepthMask(GL_TRUE);//Agregar la proyección de profundidad
+    glEnableClientState( GL_VERTEX_ARRAY );
+    glEnableClientState(GL_COLOR_ARRAY);
+    glVertexPointer( 3, GL_FLOAT, 0, vertices );
+    glColorPointer(3, GL_FLOAT, 0, colour); //Buffer de color
+    glDrawArrays( GL_QUADS, 0, 24 );
+    glDisableClientState( GL_VERTEX_ARRAY );
+    glDisableClientState(GL_COLOR_ARRAY);
+}
+
+void piso( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat edgeLength )
+{
+    GLfloat halfSideLength = edgeLength * 3;
+    int h1 = 1600, h2 = 400, h3 = -90, z1 = 120, x1 = 0;
+    
+    
+    // h1 sube z1 baja
+    GLfloat vertices[] =
+    {
+        // Cara frontal
+        centerPosX - halfSideLength * 4, centerPosY + halfSideLength - h1, centerPosZ + halfSideLength * 4, // P1
+        centerPosX + halfSideLength * 4, centerPosY + halfSideLength - h1, centerPosZ + halfSideLength * 4, // P2
+        centerPosX + halfSideLength * 4, centerPosY - halfSideLength - h2, centerPosZ + halfSideLength * 4, // P4
+        centerPosX - halfSideLength * 4, centerPosY - halfSideLength - h2, centerPosZ + halfSideLength * 4, // P3
+        
+        // Cara Trasera
+        centerPosX - halfSideLength * 4, centerPosY + halfSideLength - h1, centerPosZ - halfSideLength * 4, // P7
+        centerPosX + halfSideLength * 4, centerPosY + halfSideLength - h1, centerPosZ - halfSideLength * 4, // P8
+        centerPosX + halfSideLength * 4, centerPosY - halfSideLength - h2, centerPosZ - halfSideLength * 4, // P6
+        centerPosX - halfSideLength * 4, centerPosY - halfSideLength - h2, centerPosZ - halfSideLength * 4, // P5
+        
+        // Cara Izquierda
+        centerPosX - halfSideLength * 4, centerPosY + halfSideLength - h1, centerPosZ + halfSideLength * 4, // P7
+        centerPosX - halfSideLength * 4, centerPosY + halfSideLength - h1, centerPosZ - halfSideLength * 4, // P1
+        centerPosX - halfSideLength * 4, centerPosY - halfSideLength - h2, centerPosZ - halfSideLength * 4, // P3
+        centerPosX - halfSideLength * 4, centerPosY - halfSideLength - h2, centerPosZ + halfSideLength * 4, // P5
+        
+        // Cara Derecha
+        centerPosX + halfSideLength * 4, centerPosY + halfSideLength - h1, centerPosZ + halfSideLength * 4, // P2
+        centerPosX + halfSideLength * 4, centerPosY + halfSideLength - h1, centerPosZ - halfSideLength * 4, // P8
+        centerPosX + halfSideLength * 4, centerPosY - halfSideLength - h2, centerPosZ - halfSideLength * 4, // P6
+        centerPosX + halfSideLength * 4, centerPosY - halfSideLength - h2, centerPosZ + halfSideLength * 4, // P4
+        
+        // Cara Superior
+        centerPosX - halfSideLength * 4, centerPosY + halfSideLength - h1, centerPosZ + halfSideLength * 4, // P1
+        centerPosX - halfSideLength * 4, centerPosY + halfSideLength - h1, centerPosZ - halfSideLength * 4, // P7
+        centerPosX + halfSideLength * 4, centerPosY + halfSideLength - h1, centerPosZ - halfSideLength * 4, // P2
+        centerPosX + halfSideLength * 4, centerPosY + halfSideLength - h1, centerPosZ + halfSideLength * 4, // P8
+        
+        // Cara Inferior
+        centerPosX - halfSideLength * 4, centerPosY - halfSideLength - h2, centerPosZ + halfSideLength * 4, // P3
+        centerPosX - halfSideLength * 4, centerPosY - halfSideLength - h2, centerPosZ - halfSideLength * 4, // P5
+        centerPosX + halfSideLength * 4, centerPosY - halfSideLength - h2, centerPosZ - halfSideLength * 4, // P4
+        centerPosX + halfSideLength * 4, centerPosY - halfSideLength - h2, centerPosZ + halfSideLength * 4  // P6
+    };
+    GLfloat colour[] = {
+        255.0,255.0,255.0,
+        255.0,255.0,255.0,
+        255.0,255.0,255.0,
+        255.0,255.0,255.0,
+        
+        255.0,255.0,255.0,
+        255.0,255.0,255.0,
+        255.0,255.0,255.0,
+        255.0,255.0,255.0,
+        
+        255.0,255.0,255.0,
+        255.0,255.0,255.0,
+        255.0,255.0,255.0,
+        255.0,255.0,255.0,
+        
+        255.0,255.0,255.0,
+        255.0,255.0,255.0,
+        255.0,255.0,255.0,
+        255.0,255.0,255.0,
+        
+        255.0,255.0,255.0,
+        255.0,255.0,255.0,
+        255.0,255.0,255.0,
+        255.0,255.0,255.0,
+        
+        255.0,255.0,255.0,
+        255.0,255.0,255.0,
+        255.0,255.0,255.0,
+        255.0,255.0,255.0,
+    };
+    
     glEnable(GL_DEPTH_TEST); //Agregar la proyección de profundidad
     glDepthMask(GL_TRUE);//Agregar la proyección de profundidad
     glEnableClientState( GL_VERTEX_ARRAY );
