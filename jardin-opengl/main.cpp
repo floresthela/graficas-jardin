@@ -7,9 +7,11 @@
 //
 
 #include <GL/glew.h>
+#include <GLUT/glut.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <cstdlib>
+#include <random>
 
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 600
@@ -27,11 +29,17 @@ void top(GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat edg
 
 void piso(GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat edgeLength);
 
+void esfera(GLfloat x, GLfloat y, GLfloat z);
+void dibuja_gotas();
+
 GLfloat rotationX = 0.0f;
 GLfloat rotationY = 0.0f;
 //GLfloat translationX = 0.0f;
 //GLfloat translationY = 0.0f;
 GLfloat escalar = 1.0f;
+static bool flag_gotas;
+static int flag = 0;
+
 
 int main(void) {
     GLFWwindow *window;
@@ -53,7 +61,6 @@ int main(void) {
     int screenWidth, screenHeight;
     glfwGetFramebufferSize( window, &screenWidth, &screenHeight );
     
-    
     if ( !window )
     {
         glfwTerminate( );
@@ -74,10 +81,25 @@ int main(void) {
     GLfloat halfScreenWidth = SCREEN_WIDTH / 2;
     GLfloat halfScreenHeight = SCREEN_HEIGHT / 2;
     
+    std::random_device rd;
+    std::mt19937 eng(rd());
+    
+    const int x_min = 350, x_max = 450;
+    const int z_min = -555, z_max = -449;
+    const int y[3] = {300,310,330};
+    int x_n, y_n, z_n;
+    
+    std::uniform_int_distribution<> distr_x(0,50);
+    std::uniform_int_distribution<> distr_z(0,50);
+    
+    x_n = distr_x(eng);
+    z_n = distr_z(eng);
     
     // Loop en donde se estará dibujando la ventana
-    while ( !glfwWindowShouldClose( window ) )
+    while (!glfwWindowShouldClose(window))
     {
+        
+        
         glClear(GL_COLOR_BUFFER_BIT);
         glClear(GL_DEPTH_BUFFER_BIT);
         
@@ -92,25 +114,66 @@ int main(void) {
         
         base(halfScreenWidth, halfScreenHeight, -500, 200);
         lado1(halfScreenWidth, halfScreenHeight + 40, -500, 200);
-        
         lado2(halfScreenWidth + 220 , halfScreenHeight + 40, -500, 200);
         lado3(halfScreenWidth, halfScreenHeight + 40, -500, 200);
         lado3(halfScreenWidth, halfScreenHeight + 40, -280, 200);
-        
         centro(halfScreenWidth + 95, halfScreenHeight, -400, 200);
         top(halfScreenWidth + 170, halfScreenHeight + 50, -440, 200);
+
         
         piso(halfScreenWidth, halfScreenHeight + 880, -500, 200);
         
         
+        esfera(350,330,-500);
+        esfera(5 ,0,-10);
+        esfera(10 ,0,9);
+        esfera(10 ,0,8);
+        esfera(5 ,0,10);
+        esfera(6 ,0,15);
+
+        
+
+        
         glPopMatrix();
         glfwSwapBuffers( window );
-        glfwPollEvents( );
+        glfwPollEvents();
     }
     
     glfwTerminate( );
     
     return 0;
+}
+
+void dibuja_gotas(){
+
+    std::random_device rd;
+    std::mt19937 eng(rd());
+    
+    const int x_min = 350, x_max = 450;
+    const int z_min = -555, z_max = -449;
+    const int y[3] = {300,310,330};
+    int x_n, y_n, z_n;
+                     
+    std::uniform_int_distribution<> distr_x(x_min,x_max);
+    std::uniform_int_distribution<> distr_z(z_min,z_max);
+    
+    x_n = distr_x(eng);
+    z_n = distr_z(eng);
+    esfera(x_n,330,z_n);
+//
+//    for(int i = 0; i < 10; i++){
+//        if(i < 9 && flag_gotas){
+//            x_n = distr_x(eng);
+//            z_n = distr_z(eng);
+//            esfera(x_n,330,z_n);
+//        }
+//    }
+}
+
+void esfera(GLfloat x, GLfloat y, GLfloat z){
+    glColor3f(0.5, 0.5, 0.5); //set ball colour
+    glTranslatef(x,y,z); //moving it toward the screen a bit on creation
+    glutWireSphere(7,10,10);
 }
 
 
@@ -221,14 +284,15 @@ void base( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat e
         0.0, 0.0, 255.0,
         0.0, 0.0, 255.0,
         
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
+        0.0,255.0,0.0,
+        0.0,255.0,0.0,
+        0.0,255.0,0.0,
+        0.0,255.0,0.0,
+        0.0,255.0,0.0,
+        0.0,255.0,0.0,
+        0.0,255.0,0.0,
+        0.0,255.0,0.0,
+       
     };
     
     //    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
@@ -304,14 +368,14 @@ void lado1( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat 
         0.0, 0.0, 255.0,
         0.0, 0.0, 255.0,
         
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
+        128,0,128,
+        128,0,128,
+        128,0,128,
+        128,0,128,
+        128,0,128,
+        128,0,128,
+        128,0,128,
+        128,0,128,
     };
     
     //    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
@@ -388,14 +452,14 @@ void lado2( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat 
         0.0, 0.0, 255.0,
         0.0, 0.0, 255.0,
         
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
+        128,0,128,
+        128,0,128,
+        128,0,128,
+        128,0,128,
+        128,0,128,
+        128,0,128,
+        128,0,128,
+        128,0,128,
     };
     
     //    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
@@ -471,14 +535,14 @@ void lado3( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat 
         0.0, 0.0, 255.0,
         0.0, 0.0, 255.0,
         
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
+        128,0,128,
+        128,0,128,
+        128,0,128,
+        128,0,128,
+        128,0,128,
+        128,0,128,
+        128,0,128,
+        128,0,128,
     };
     
     //    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
@@ -554,14 +618,14 @@ void lado4( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat 
         0.0, 0.0, 255.0,
         0.0, 0.0, 255.0,
         
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
+        128,0,128,
+        128,0,128,
+        128,0,128,
+        128,0,128,
+        128,0,128,
+        128,0,128,
+        128,0,128,
+        128,0,128,
     };
     
     //    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
@@ -751,7 +815,7 @@ void top( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat ed
 void piso( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat edgeLength )
 {
     GLfloat halfSideLength = edgeLength * 3;
-    int h1 = 1600, h2 = 400, h3 = -90, z1 = 120, x1 = 0;
+    int h1 = 1600, h2 = 450, h3 = -90, z1 = 120, x1 = 0;
     
     
     // h1 sube z1 baja
@@ -835,3 +899,5 @@ void piso( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat e
     glDisableClientState( GL_VERTEX_ARRAY );
     glDisableClientState(GL_COLOR_ARRAY);
 }
+
+
