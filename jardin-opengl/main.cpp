@@ -102,6 +102,7 @@ int main(void) {
         
         glClear(GL_COLOR_BUFFER_BIT);
         glClear(GL_DEPTH_BUFFER_BIT);
+        glClearColor(0.53,0.81,0.92, 1);
         
         // Render (Se crea el cubo y se generan los cambios en los vectores de transformación
         glPushMatrix();
@@ -124,16 +125,34 @@ int main(void) {
         piso(halfScreenWidth, halfScreenHeight + 880, -500, 200);
         
         
+        // gotas de agua para la fuente
         esfera(350,330,-500);
-        esfera(5 ,0,-10);
-        esfera(10 ,0,9);
-        esfera(10 ,0,8);
-        esfera(5 ,0,10);
-        esfera(6 ,0,15);
+        esfera(10 ,0,-20);
+        esfera(-3 ,0,-20);
+        esfera(25,0,0);
+        esfera(20,0,-5);
+        esfera(20,0,5);
+        esfera(15,0,15);
+        esfera(2,0,20);
+        esfera(-3,0,20);
+        esfera(-2,0,20);
+        esfera(-20,0,0);
+        esfera(-20,0,2);
+        esfera(-20,0,3);
+        esfera(-20,0,-1);
+        esfera(2,0,-18);
+        esfera(0,-10,-10);
+        esfera(10,-5,-30);
+        esfera(10,-5,-20);
+        esfera(20,-5,-10);
+        esfera(25,-5,3);
+        esfera(20,-5,20);
+        esfera(0,2,30);
+        esfera(2,-5,20);
+        esfera(-30,-5,30);
+        esfera(-30,5,0);
 
-        
-
-        
+    
         glPopMatrix();
         glfwSwapBuffers( window );
         glfwPollEvents();
@@ -144,31 +163,23 @@ int main(void) {
     return 0;
 }
 
-void dibuja_gotas(){
-
-    std::random_device rd;
-    std::mt19937 eng(rd());
-    
-    const int x_min = 350, x_max = 450;
-    const int z_min = -555, z_max = -449;
-    const int y[3] = {300,310,330};
-    int x_n, y_n, z_n;
-                     
-    std::uniform_int_distribution<> distr_x(x_min,x_max);
-    std::uniform_int_distribution<> distr_z(z_min,z_max);
-    
-    x_n = distr_x(eng);
-    z_n = distr_z(eng);
-    esfera(x_n,330,z_n);
+//void dibuja_gotas(){
 //
-//    for(int i = 0; i < 10; i++){
-//        if(i < 9 && flag_gotas){
-//            x_n = distr_x(eng);
-//            z_n = distr_z(eng);
-//            esfera(x_n,330,z_n);
-//        }
-//    }
-}
+//    std::random_device rd;
+//    std::mt19937 eng(rd());
+//
+//    const int x_min = 350, x_max = 450;
+//    const int z_min = -555, z_max = -449;
+//    const int y[3] = {300,310,330};
+//    int x_n, y_n, z_n;
+//
+//    std::uniform_int_distribution<> distr_x(x_min,x_max);
+//    std::uniform_int_distribution<> distr_z(z_min,z_max);
+//
+//    x_n = distr_x(eng);
+//    z_n = distr_z(eng);
+//    esfera(x_n,330,z_n);
+//}
 
 void esfera(GLfloat x, GLfloat y, GLfloat z){
     glColor3f(0.5, 0.5, 0.5); //set ball colour
@@ -815,47 +826,47 @@ void top( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat ed
 void piso( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat edgeLength )
 {
     GLfloat halfSideLength = edgeLength * 3;
-    int h1 = 1600, h2 = 450, h3 = -90, z1 = 120, x1 = 0;
+    int h1 = 1600, h2 = 450, h3 = -90, z1 = 120, x1 = 0, size = 9;
     
     
     // h1 sube z1 baja
     GLfloat vertices[] =
     {
         // Cara frontal
-        centerPosX - halfSideLength * 4, centerPosY + halfSideLength - h1, centerPosZ + halfSideLength * 4, // P1
-        centerPosX + halfSideLength * 4, centerPosY + halfSideLength - h1, centerPosZ + halfSideLength * 4, // P2
-        centerPosX + halfSideLength * 4, centerPosY - halfSideLength - h2, centerPosZ + halfSideLength * 4, // P4
-        centerPosX - halfSideLength * 4, centerPosY - halfSideLength - h2, centerPosZ + halfSideLength * 4, // P3
+        centerPosX - halfSideLength * size, centerPosY + halfSideLength - h1, centerPosZ + halfSideLength * size, // P1
+        centerPosX + halfSideLength * size, centerPosY + halfSideLength - h1, centerPosZ + halfSideLength * size, // P2
+        centerPosX + halfSideLength * size, centerPosY - halfSideLength - h2, centerPosZ + halfSideLength * size, // P4
+        centerPosX - halfSideLength * size, centerPosY - halfSideLength - h2, centerPosZ + halfSideLength * size, // P3
         
         // Cara Trasera
-        centerPosX - halfSideLength * 4, centerPosY + halfSideLength - h1, centerPosZ - halfSideLength * 4, // P7
-        centerPosX + halfSideLength * 4, centerPosY + halfSideLength - h1, centerPosZ - halfSideLength * 4, // P8
-        centerPosX + halfSideLength * 4, centerPosY - halfSideLength - h2, centerPosZ - halfSideLength * 4, // P6
-        centerPosX - halfSideLength * 4, centerPosY - halfSideLength - h2, centerPosZ - halfSideLength * 4, // P5
+        centerPosX - halfSideLength * size, centerPosY + halfSideLength - h1, centerPosZ - halfSideLength * size, // P7
+        centerPosX + halfSideLength * size, centerPosY + halfSideLength - h1, centerPosZ - halfSideLength * size, // P8
+        centerPosX + halfSideLength * size, centerPosY - halfSideLength - h2, centerPosZ - halfSideLength * size, // P6
+        centerPosX - halfSideLength * size, centerPosY - halfSideLength - h2, centerPosZ - halfSideLength * size, // P5
         
         // Cara Izquierda
-        centerPosX - halfSideLength * 4, centerPosY + halfSideLength - h1, centerPosZ + halfSideLength * 4, // P7
-        centerPosX - halfSideLength * 4, centerPosY + halfSideLength - h1, centerPosZ - halfSideLength * 4, // P1
-        centerPosX - halfSideLength * 4, centerPosY - halfSideLength - h2, centerPosZ - halfSideLength * 4, // P3
-        centerPosX - halfSideLength * 4, centerPosY - halfSideLength - h2, centerPosZ + halfSideLength * 4, // P5
+        centerPosX - halfSideLength * size, centerPosY + halfSideLength - h1, centerPosZ + halfSideLength * size, // P7
+        centerPosX - halfSideLength * size, centerPosY + halfSideLength - h1, centerPosZ - halfSideLength * size, // P1
+        centerPosX - halfSideLength * size, centerPosY - halfSideLength - h2, centerPosZ - halfSideLength * size, // P3
+        centerPosX - halfSideLength * size, centerPosY - halfSideLength - h2, centerPosZ + halfSideLength * size, // P5
         
         // Cara Derecha
-        centerPosX + halfSideLength * 4, centerPosY + halfSideLength - h1, centerPosZ + halfSideLength * 4, // P2
-        centerPosX + halfSideLength * 4, centerPosY + halfSideLength - h1, centerPosZ - halfSideLength * 4, // P8
-        centerPosX + halfSideLength * 4, centerPosY - halfSideLength - h2, centerPosZ - halfSideLength * 4, // P6
-        centerPosX + halfSideLength * 4, centerPosY - halfSideLength - h2, centerPosZ + halfSideLength * 4, // P4
+        centerPosX + halfSideLength * size, centerPosY + halfSideLength - h1, centerPosZ + halfSideLength * size, // P2
+        centerPosX + halfSideLength * size, centerPosY + halfSideLength - h1, centerPosZ - halfSideLength * size, // P8
+        centerPosX + halfSideLength * size, centerPosY - halfSideLength - h2, centerPosZ - halfSideLength * size, // P6
+        centerPosX + halfSideLength * size, centerPosY - halfSideLength - h2, centerPosZ + halfSideLength * size, // P4
         
         // Cara Superior
-        centerPosX - halfSideLength * 4, centerPosY + halfSideLength - h1, centerPosZ + halfSideLength * 4, // P1
-        centerPosX - halfSideLength * 4, centerPosY + halfSideLength - h1, centerPosZ - halfSideLength * 4, // P7
-        centerPosX + halfSideLength * 4, centerPosY + halfSideLength - h1, centerPosZ - halfSideLength * 4, // P2
-        centerPosX + halfSideLength * 4, centerPosY + halfSideLength - h1, centerPosZ + halfSideLength * 4, // P8
+        centerPosX - halfSideLength * size, centerPosY + halfSideLength - h1, centerPosZ + halfSideLength * size, // P1
+        centerPosX - halfSideLength * size, centerPosY + halfSideLength - h1, centerPosZ - halfSideLength * size, // P7
+        centerPosX + halfSideLength * size, centerPosY + halfSideLength - h1, centerPosZ - halfSideLength * size, // P2
+        centerPosX + halfSideLength * size, centerPosY + halfSideLength - h1, centerPosZ + halfSideLength * size, // P8
         
         // Cara Inferior
-        centerPosX - halfSideLength * 4, centerPosY - halfSideLength - h2, centerPosZ + halfSideLength * 4, // P3
-        centerPosX - halfSideLength * 4, centerPosY - halfSideLength - h2, centerPosZ - halfSideLength * 4, // P5
-        centerPosX + halfSideLength * 4, centerPosY - halfSideLength - h2, centerPosZ - halfSideLength * 4, // P4
-        centerPosX + halfSideLength * 4, centerPosY - halfSideLength - h2, centerPosZ + halfSideLength * 4  // P6
+        centerPosX - halfSideLength * size, centerPosY - halfSideLength - h2, centerPosZ + halfSideLength * size, // P3
+        centerPosX - halfSideLength * size, centerPosY - halfSideLength - h2, centerPosZ - halfSideLength * size, // P5
+        centerPosX + halfSideLength * size, centerPosY - halfSideLength - h2, centerPosZ - halfSideLength * size, // P4
+        centerPosX + halfSideLength * size, centerPosY - halfSideLength - h2, centerPosZ + halfSideLength * size  // P6
     };
     GLfloat colour[] = {
         255.0,255.0,255.0,
