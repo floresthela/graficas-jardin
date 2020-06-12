@@ -27,6 +27,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		294EE6972479B3EE00C027D9 /* SOIL2 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = SOIL2; sourceTree = "<group>"; };
 		29D1EB84246A063F005694E5 /* jardin-opengl */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "jardin-opengl"; sourceTree = BUILT_PRODUCTS_DIR; };
 		29D1EB87246A063F005694E5 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		29D1EB8F246A06D7005694E5 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
@@ -70,6 +71,7 @@
 		29D1EB86246A063F005694E5 /* jardin-opengl */ = {
 			isa = PBXGroup;
 			children = (
+				294EE6972479B3EE00C027D9 /* SOIL2 */,
 				29D1EB87246A063F005694E5 /* main.cpp */,
 			);
 			path = "jardin-opengl";

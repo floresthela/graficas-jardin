@@ -12,6 +12,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <random>
+#include "SOIL2/SOIL2.h" // borrar
 
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 600
@@ -34,11 +35,11 @@ void dibuja_gotas();
 
 GLfloat rotationX = 0.0f;
 GLfloat rotationY = 0.0f;
-//GLfloat translationX = 0.0f;
-//GLfloat translationY = 0.0f;
+GLfloat ty1, ty2, ty3, ty4, ty5 = 0.0f;
 GLfloat escalar = 1.0f;
 static bool flag_gotas;
 static int flag = 0;
+int eX = 350, eY = 330, eZ = -500;
 
 
 int main(void) {
@@ -61,16 +62,20 @@ int main(void) {
     int screenWidth, screenHeight;
     glfwGetFramebufferSize( window, &screenWidth, &screenHeight );
     
-    if ( !window )
+    if (!window)
     {
         glfwTerminate( );
         return -1;
     }
     
     // Se crea el contexto de la ventana
-    glfwMakeContextCurrent( window );
+    glfwMakeContextCurrent(window);
     
     glViewport( 0.0f, 0.0f, screenWidth, screenHeight ); // Específica en que parte de la ventana se dibujaran los elementos
+    
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    
     glMatrixMode( GL_PROJECTION ); // Se crea la matriz de proyección
     glLoadIdentity( ); // Se crea de la matriz identidad
     glOrtho( 0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, 0, 1000 ); // Establecer el sistema de coordenadas
@@ -81,30 +86,18 @@ int main(void) {
     GLfloat halfScreenWidth = SCREEN_WIDTH / 2;
     GLfloat halfScreenHeight = SCREEN_HEIGHT / 2;
     
-    std::random_device rd;
-    std::mt19937 eng(rd());
-    
-    const int x_min = 350, x_max = 450;
-    const int z_min = -555, z_max = -449;
-    const int y[3] = {300,310,330};
-    int x_n, y_n, z_n;
-    
-    std::uniform_int_distribution<> distr_x(0,50);
-    std::uniform_int_distribution<> distr_z(0,50);
-    
-    x_n = distr_x(eng);
-    z_n = distr_z(eng);
+    double seconds = 0.0;
     
     // Loop en donde se estará dibujando la ventana
     while (!glfwWindowShouldClose(window))
     {
-        
+        seconds = glfwGetTime();
         
         glClear(GL_COLOR_BUFFER_BIT);
         glClear(GL_DEPTH_BUFFER_BIT);
         glClearColor(0.53,0.81,0.92, 1);
         
-        // Render (Se crea el cubo y se generan los cambios en los vectores de transformación
+        // Render (Se crea el cubo y se generan los cambios en los vectores de transformación)
         glPushMatrix();
         glTranslatef(halfScreenWidth, halfScreenHeight, -500);
         glScalef(escalar, escalar, escalar);
@@ -125,34 +118,108 @@ int main(void) {
         piso(halfScreenWidth, halfScreenHeight + 880, -500, 200);
         
         
+        // matriz para trasladar las esferas en eje y
+        glPushMatrix();
+        glPushMatrix();
+        glTranslatef(0, ty1, 0);
+        
         // gotas de agua para la fuente
-        esfera(350,330,-500);
+        
+        esfera(eX,eY,eZ);
         esfera(10 ,0,-20);
-        esfera(-3 ,0,-20);
+        
+        if(abs(ty1) == 150){
+            ty1 += abs(ty1);
+            ty1 = 0;
+        } else {
+            ty1 -= 0.5;
+        }
+        
+
+        glPopMatrix();
+        
+        // ===============================
+        glPushMatrix();
+        glTranslatef(0, ty2, 0);
+        esfera(eX + -3 ,eY + 0,eZ + -20);
         esfera(25,0,0);
         esfera(20,0,-5);
         esfera(20,0,5);
-        esfera(15,0,15);
+        
+        if(abs(ty2) == 150){
+            ty2 += abs(ty2);
+            ty2 = 0;
+        } else {
+            ty2 -= 1;
+        }
+        
+        glPopMatrix();
+        // ===============================
+        
+        glPushMatrix();
+        glTranslatef(0, ty3, 0);
+        
+        esfera(eX + 15, eY + 0,eZ + 15);
         esfera(2,0,20);
         esfera(-3,0,20);
         esfera(-2,0,20);
         esfera(-20,0,0);
         esfera(-20,0,2);
-        esfera(-20,0,3);
-        esfera(-20,0,-1);
+        
+        if(abs(ty3) > 100){
+            ty3 += abs(ty3);
+            ty3 = 0;
+        } else {
+            ty3 -= 0.8;
+        }
+        
+        glPopMatrix();
+        
+        // ===============================
+        glPushMatrix();
+        glTranslatef(0, ty4, 0);
+        
+        esfera(eX + -20,eY + 0, eZ + 3);
+        esfera(0,0,-1);
         esfera(2,0,-18);
         esfera(0,-10,-10);
         esfera(10,-5,-30);
         esfera(10,-5,-20);
         esfera(20,-5,-10);
         esfera(25,-5,3);
-        esfera(20,-5,20);
-        esfera(0,2,30);
-        esfera(2,-5,20);
-        esfera(-30,-5,30);
-        esfera(-30,5,0);
-
+        
+        if(abs(ty4) > 100){
+            ty4 += abs(ty4);
+            ty4 = 0;
+        } else {
+            ty4 -= 0.5;
+        }
+        
+        glPopMatrix();
+        // ===============================
+        
+        glPushMatrix();
+        glTranslatef(0, ty5, 0);
+        
+        esfera(eX + 20, eY + -5,eZ + 20);
+        esfera(8,2,30);
+        esfera(8,-5,20);
+        esfera(50,-5,30);
+        esfera(50,5,0);
+        
+        if(abs(ty5) > 100){
+            ty5 += abs(ty5);
+            ty5 = 0;
+        } else {
+            ty5 -= 0.4;
+        }
+        
+        
+        glPopMatrix();
     
+        
+        
+        
         glPopMatrix();
         glfwSwapBuffers( window );
         glfwPollEvents();
@@ -163,24 +230,6 @@ int main(void) {
     return 0;
 }
 
-//void dibuja_gotas(){
-//
-//    std::random_device rd;
-//    std::mt19937 eng(rd());
-//
-//    const int x_min = 350, x_max = 450;
-//    const int z_min = -555, z_max = -449;
-//    const int y[3] = {300,310,330};
-//    int x_n, y_n, z_n;
-//
-//    std::uniform_int_distribution<> distr_x(x_min,x_max);
-//    std::uniform_int_distribution<> distr_z(z_min,z_max);
-//
-//    x_n = distr_x(eng);
-//    z_n = distr_z(eng);
-//    esfera(x_n,330,z_n);
-//}
-
 void esfera(GLfloat x, GLfloat y, GLfloat z){
     glColor3f(0.5, 0.5, 0.5); //set ball colour
     glTranslatef(x,y,z); //moving it toward the screen a bit on creation
@@ -188,7 +237,6 @@ void esfera(GLfloat x, GLfloat y, GLfloat z){
 }
 
 
-// LLamar mandar las teclas
 void keyCallback( GLFWwindow *window, int key, int scancode, int action, int mods )
 {
     const GLfloat rotationSpeed = 10;
@@ -210,12 +258,6 @@ void keyCallback( GLFWwindow *window, int key, int scancode, int action, int mod
             case GLFW_KEY_LEFT:
                 rotationY -= rotationSpeed;
                 break;
-//            case GLFW_KEY_A:
-//                translationX -= 10;
-//                break;
-//            case GLFW_KEY_S:
-//                translationX += 10;
-//                break;
 //            case GLFW_KEY_W:
 //                translationY += 10;
 //                break;
@@ -229,8 +271,6 @@ void keyCallback( GLFWwindow *window, int key, int scancode, int action, int mod
                 escalar += 0.1;
                 break;
         }
-        
-        
     }
 }
 
@@ -900,6 +940,7 @@ void piso( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat e
         255.0,255.0,255.0,
     };
     
+
     glEnable(GL_DEPTH_TEST); //Agregar la proyección de profundidad
     glDepthMask(GL_TRUE);//Agregar la proyección de profundidad
     glEnableClientState( GL_VERTEX_ARRAY );
