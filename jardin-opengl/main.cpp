@@ -12,7 +12,6 @@
 #include <iostream>
 #include <cstdlib>
 #include <random>
-#include "SOIL2/SOIL2.h" // borrar
 
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 600
@@ -33,12 +32,46 @@ void piso(GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat ed
 void esfera(GLfloat x, GLfloat y, GLfloat z);
 void dibuja_gotas();
 
+
+GLfloat colour_purple[] = {
+    
+    0.77,0.30,1,
+    0.77,0.30,1,
+    0.77,0.30,1,
+    0.77,0.30,1,
+    
+    0.77,0.30,1,
+    0.77,0.30,1,
+    0.77,0.30,1,
+    0.77,0.30,1,
+    
+    0.48,0.19,0.62,
+    0.48,0.19,0.62,
+    0.48,0.19,0.62,
+    0.48,0.19,0.62,
+    
+    0.48,0.19,0.62,
+    0.48,0.19,0.62,
+    0.48,0.19,0.62,
+    0.48,0.19,0.62,
+    
+    0.87,0.80,1,
+    0.87,0.80,1,
+    0.87,0.80,1,
+    0.87,0.80,1,
+    
+    0.87,0.80,1,
+    0.87,0.80,1,
+    0.87,0.80,1,
+    0.87,0.80,1,
+};
+
+
 GLfloat rotationX = 0.0f;
 GLfloat rotationY = 0.0f;
-GLfloat ty1, ty2, ty3, ty4, ty5 = 0.0f;
+GLfloat ty1, ty2, ty3, ty4, ty5, ty6 = 0.0f;
 GLfloat escalar = 1.0f;
-static bool flag_gotas;
-static int flag = 0;
+
 int eX = 350, eY = 330, eZ = -500;
 
 
@@ -86,12 +119,11 @@ int main(void) {
     GLfloat halfScreenWidth = SCREEN_WIDTH / 2;
     GLfloat halfScreenHeight = SCREEN_HEIGHT / 2;
     
-    double seconds = 0.0;
+
     
     // Loop en donde se estará dibujando la ventana
     while (!glfwWindowShouldClose(window))
     {
-        seconds = glfwGetTime();
         
         glClear(GL_COLOR_BUFFER_BIT);
         glClear(GL_DEPTH_BUFFER_BIT);
@@ -123,7 +155,7 @@ int main(void) {
         glPushMatrix();
         glTranslatef(0, ty1, 0);
         
-        // gotas de agua para la fuente
+        // dibuja gotas de agua para la fuente
         
         esfera(eX,eY,eZ);
         esfera(10 ,0,-20);
@@ -142,9 +174,9 @@ int main(void) {
         glPushMatrix();
         glTranslatef(0, ty2, 0);
         esfera(eX + -3 ,eY + 0,eZ + -20);
-        esfera(25,0,0);
-        esfera(20,0,-5);
+        esfera(25,0,10);
         esfera(20,0,5);
+        esfera(20,0,15);
         
         if(abs(ty2) == 150){
             ty2 += abs(ty2);
@@ -158,66 +190,79 @@ int main(void) {
         
         glPushMatrix();
         glTranslatef(0, ty3, 0);
+
+        esfera(eX + 90, eY + 0,eZ + 15);
+        esfera(8,0,10);
+        esfera(-3,1,10);
         
-        esfera(eX + 15, eY + 0,eZ + 15);
-        esfera(2,0,20);
-        esfera(-3,0,20);
-        esfera(-2,0,20);
-        esfera(-20,0,0);
-        esfera(-20,0,2);
-        
+
         if(abs(ty3) > 100){
             ty3 += abs(ty3);
             ty3 = 0;
         } else {
             ty3 -= 0.8;
         }
-        
+
         glPopMatrix();
-        
+
         // ===============================
         glPushMatrix();
         glTranslatef(0, ty4, 0);
         
+        esfera(eX + -5,eY + 0,eZ + 20);
+        esfera(10,2,10);
+        esfera(-4,0,20);
+        
+        if(abs(ty4) > 100){
+            ty4 += abs(ty4);
+            ty4 = 0;
+        } else {
+            ty4 -= 0.4;
+        }
+        glPopMatrix();
+        
+        
+        // ===============================
+        glPushMatrix();
+        glTranslatef(0, ty5, 0);
+
         esfera(eX + -20,eY + 0, eZ + 3);
         esfera(0,0,-1);
         esfera(2,0,-18);
         esfera(0,-10,-10);
         esfera(10,-5,-30);
         esfera(10,-5,-20);
-        esfera(20,-5,-10);
-        esfera(25,-5,3);
-        
-        if(abs(ty4) > 100){
-            ty4 += abs(ty4);
-            ty4 = 0;
-        } else {
-            ty4 -= 0.5;
-        }
-        
-        glPopMatrix();
-        // ===============================
-        
-        glPushMatrix();
-        glTranslatef(0, ty5, 0);
-        
-        esfera(eX + 20, eY + -5,eZ + 20);
-        esfera(8,2,30);
-        esfera(8,-5,20);
-        esfera(50,-5,30);
-        esfera(50,5,0);
         
         if(abs(ty5) > 100){
             ty5 += abs(ty5);
             ty5 = 0;
         } else {
-            ty5 -= 0.4;
+            ty5 -= 0.5;
         }
+        glPopMatrix();
         
+        // ===============================
+        glPushMatrix();
+        glTranslatef(0, ty6, 0);
         
+        esfera(eX + 20,eY + -5,eZ + -10);
+        esfera(25,-5,3);
+
+        esfera(5, -5, 20);
+        esfera(8,2,30);
+        esfera(8,-5,20);
+        esfera(10,-5,30);
+        esfera(5,5,0);
+
+        if(abs(ty6) > 100){
+            ty6 += abs(ty6);
+            ty6 = 0;
+        } else {
+            ty6 -= 0.5;
+        }
         glPopMatrix();
     
-        
+        // ===============================
         
         
         glPopMatrix();
@@ -231,7 +276,7 @@ int main(void) {
 }
 
 void esfera(GLfloat x, GLfloat y, GLfloat z){
-    glColor3f(0.5, 0.5, 0.5); //set ball colour
+    glColor3f(0.15, 0.32, 1); //set ball colour
     glTranslatef(x,y,z); //moving it toward the screen a bit on creation
     glutWireSphere(7,10,10);
 }
@@ -258,12 +303,7 @@ void keyCallback( GLFWwindow *window, int key, int scancode, int action, int mod
             case GLFW_KEY_LEFT:
                 rotationY -= rotationSpeed;
                 break;
-//            case GLFW_KEY_W:
-//                translationY += 10;
-//                break;
-//            case GLFW_KEY_X:
-//                translationY -=10;
-//                break;
+
             case GLFW_KEY_1: // escalar disminuye el tamaño con la tecla del número 1
                 escalar -= 0.1;
                 break;
@@ -317,34 +357,6 @@ void base( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat e
         centerPosX + halfSideLength, centerPosY - halfSideLength, centerPosZ - halfSideLength, // P4
         centerPosX + halfSideLength, centerPosY - halfSideLength, centerPosZ + halfSideLength  // P6
     };
-    GLfloat colour[] = {
-        255.0,0.0,0.0,
-        255.0,0.0,0.0,
-        255.0,0.0,0.0,
-        255.0,0.0,0.0,
-        0.0,255.0,0.0,
-        0.0,255.0,0.0,
-        0.0,255.0,0.0,
-        0.0,255.0,0.0,
-        128,0.0,128,
-        128,0.0,128,
-        128,0.0,128,
-        128,0.0,128,
-        0.0, 0.0, 255.0,
-        0.0, 0.0, 255.0,
-        0.0, 0.0, 255.0,
-        0.0, 0.0, 255.0,
-        
-        0.0,255.0,0.0,
-        0.0,255.0,0.0,
-        0.0,255.0,0.0,
-        0.0,255.0,0.0,
-        0.0,255.0,0.0,
-        0.0,255.0,0.0,
-        0.0,255.0,0.0,
-        0.0,255.0,0.0,
-       
-    };
     
     //    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
     glEnable(GL_DEPTH_TEST); //Agregar la proyección de profundidad
@@ -352,7 +364,7 @@ void base( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat e
     glEnableClientState( GL_VERTEX_ARRAY );
     glEnableClientState(GL_COLOR_ARRAY);
     glVertexPointer( 3, GL_FLOAT, 0, vertices );
-    glColorPointer(3, GL_FLOAT, 0, colour); //Buffer de color
+    glColorPointer(3, GL_FLOAT, 0, colour_purple); //Buffer de color
     glDrawArrays( GL_QUADS, 0, 24 );
     glDisableClientState( GL_VERTEX_ARRAY );
     glDisableClientState(GL_COLOR_ARRAY);
@@ -401,33 +413,7 @@ void lado1( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat 
          centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ - halfSideLength, // P4
          centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength  // P6
     };
-    GLfloat colour[] = {
-        255.0,0.0,0.0,
-        255.0,0.0,0.0,
-        255.0,0.0,0.0,
-        255.0,0.0,0.0,
-        0.0,255.0,0.0,
-        0.0,255.0,0.0,
-        0.0,255.0,0.0,
-        0.0,255.0,0.0,
-        128,0.0,128,
-        128,0.0,128,
-        128,0.0,128,
-        128,0.0,128,
-        0.0, 0.0, 255.0,
-        0.0, 0.0, 255.0,
-        0.0, 0.0, 255.0,
-        0.0, 0.0, 255.0,
-        
-        128,0,128,
-        128,0,128,
-        128,0,128,
-        128,0,128,
-        128,0,128,
-        128,0,128,
-        128,0,128,
-        128,0,128,
-    };
+
     
     //    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
     glEnable(GL_DEPTH_TEST); //Agregar la proyección de profundidad
@@ -435,7 +421,7 @@ void lado1( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat 
     glEnableClientState( GL_VERTEX_ARRAY );
     glEnableClientState(GL_COLOR_ARRAY);
     glVertexPointer( 3, GL_FLOAT, 0, vertices );
-    glColorPointer(3, GL_FLOAT, 0, colour); //Buffer de color
+    glColorPointer(3, GL_FLOAT, 0, colour_purple); //Buffer de color
     glDrawArrays( GL_QUADS, 0, 24 );
     glDisableClientState( GL_VERTEX_ARRAY );
     glDisableClientState(GL_COLOR_ARRAY);
@@ -485,33 +471,7 @@ void lado2( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat 
         centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ - halfSideLength, // P4
         centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength  // P6
     };
-    GLfloat colour[] = {
-        255.0,0.0,0.0,
-        255.0,0.0,0.0,
-        255.0,0.0,0.0,
-        255.0,0.0,0.0,
-        0.0,255.0,0.0,
-        0.0,255.0,0.0,
-        0.0,255.0,0.0,
-        0.0,255.0,0.0,
-        128,0.0,128,
-        128,0.0,128,
-        128,0.0,128,
-        128,0.0,128,
-        0.0, 0.0, 255.0,
-        0.0, 0.0, 255.0,
-        0.0, 0.0, 255.0,
-        0.0, 0.0, 255.0,
-        
-        128,0,128,
-        128,0,128,
-        128,0,128,
-        128,0,128,
-        128,0,128,
-        128,0,128,
-        128,0,128,
-        128,0,128,
-    };
+
     
     //    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
     glEnable(GL_DEPTH_TEST); //Agregar la proyección de profundidad
@@ -519,7 +479,7 @@ void lado2( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat 
     glEnableClientState( GL_VERTEX_ARRAY );
     glEnableClientState(GL_COLOR_ARRAY);
     glVertexPointer( 3, GL_FLOAT, 0, vertices );
-    glColorPointer(3, GL_FLOAT, 0, colour); //Buffer de color
+    glColorPointer(3, GL_FLOAT, 0, colour_purple); //Buffer de color
     glDrawArrays( GL_QUADS, 0, 24 );
     glDisableClientState( GL_VERTEX_ARRAY );
     glDisableClientState(GL_COLOR_ARRAY);
@@ -602,7 +562,7 @@ void lado3( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat 
     glEnableClientState( GL_VERTEX_ARRAY );
     glEnableClientState(GL_COLOR_ARRAY);
     glVertexPointer( 3, GL_FLOAT, 0, vertices );
-    glColorPointer(3, GL_FLOAT, 0, colour); //Buffer de color
+    glColorPointer(3, GL_FLOAT, 0, colour_purple); //Buffer de color
     glDrawArrays( GL_QUADS, 0, 24 );
     glDisableClientState( GL_VERTEX_ARRAY );
     glDisableClientState(GL_COLOR_ARRAY);
@@ -651,33 +611,7 @@ void lado4( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat 
         centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ - halfSideLength, // P4
         centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength - z1  // P6
     };
-    GLfloat colour[] = {
-        255.0,0.0,0.0,
-        255.0,0.0,0.0,
-        255.0,0.0,0.0,
-        255.0,0.0,0.0,
-        0.0,255.0,0.0,
-        0.0,255.0,0.0,
-        0.0,255.0,0.0,
-        0.0,255.0,0.0,
-        128,0.0,128,
-        128,0.0,128,
-        128,0.0,128,
-        128,0.0,128,
-        0.0, 0.0, 255.0,
-        0.0, 0.0, 255.0,
-        0.0, 0.0, 255.0,
-        0.0, 0.0, 255.0,
-        
-        128,0,128,
-        128,0,128,
-        128,0,128,
-        128,0,128,
-        128,0,128,
-        128,0,128,
-        128,0,128,
-        128,0,128,
-    };
+
     
     //    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
     glEnable(GL_DEPTH_TEST); //Agregar la proyección de profundidad
@@ -685,7 +619,7 @@ void lado4( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat 
     glEnableClientState( GL_VERTEX_ARRAY );
     glEnableClientState(GL_COLOR_ARRAY);
     glVertexPointer( 3, GL_FLOAT, 0, vertices );
-    glColorPointer(3, GL_FLOAT, 0, colour); //Buffer de color
+    glColorPointer(3, GL_FLOAT, 0, colour_purple); //Buffer de color
     glDrawArrays( GL_QUADS, 0, 24 );
     glDisableClientState( GL_VERTEX_ARRAY );
     glDisableClientState(GL_COLOR_ARRAY);
@@ -735,31 +669,35 @@ void centro( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat
         centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength - z1  // P6
     };
     GLfloat colour[] = {
-        255.0,255.0,0,
-        255.0,255.0,0,
-        255.0,255.0,0,
-        255.0,255.0,0,
-        255.0,255.0,0,
-        255.0,255.0,0,
-        255.0,255.0,0,
-        255.0,255.0,0,
-        255.0,255.0,0,
-        255.0,255.0,0,
-        255.0,255.0,0,
-        255.0,255.0,0,
-        255.0,255.0,0,
-        255.0,255.0,0,
-        255.0,255.0,0,
-        255.0,255.0,0,
+        1,0.75,0.5,
+        1,0.75,0.5,
+        1,0.75,0.5,
+        1,0.75,0.5,
         
-        255.0,255.0,0,
-        255.0,255.0,0,
-        255.0,255.0,0,
-        255.0,255.0,0,
-        255.0,255.0,0,
-        255.0,255.0,0,
-        255.0,255.0,0,
-        255.0,255.0,0,
+        1,0.75,0.5,
+        1,0.75,0.5,
+        1,0.75,0.5,
+        1,0.75,0.5,
+        
+        1,0.65,0.30,
+        1,0.65,0.30,
+        1,0.65,0.30,
+        1,0.65,0.30,
+        
+        1,0.65,0.30,
+        1,0.65,0.30,
+        1,0.65,0.30,
+        1,0.65,0.30,
+        
+        1,0.85,0.70,
+        1,0.85,0.70,
+        1,0.85,0.70,
+        1,0.85,0.70,
+        
+        1,0.85,0.70,
+        1,0.85,0.70,
+        1,0.85,0.70,
+        1,0.85,0.70,
     };
     
     //    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
@@ -819,37 +757,6 @@ void top( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat ed
         centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ - halfSideLength, // P4
         centerPosX + h1, centerPosY - halfSideLength - h3, centerPosZ + halfSideLength - z1  // P6
     };
-    GLfloat colour[] = {
-        255.0,255.0,0,
-        255.0,255.0,0,
-        255.0,255.0,0,
-        255.0,255.0,0,
-        
-        255.0,0,0,
-        255.0,0,0,
-        255.0,0,0,
-        255.0,0,0,
-        
-        0,255.0,0,
-        0,255.0,0,
-        0,255.0,0,
-        0,255.0,0,
-        
-        0,0,255.0,
-        0,0,255.0,
-        0,0,255.0,
-        0,0,255.0,
-        
-        0,0,255.0,
-        0,0,255.0,
-        0,0,255.0,
-        0,0,255.0,
-        
-        255.0,255.0,0,
-        255.0,255.0,0,
-        255.0,255.0,0,
-        255.0,255.0,0,
-    };
     
     //    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
     glEnable(GL_DEPTH_TEST); //Agregar la proyección de profundidad
@@ -857,7 +764,7 @@ void top( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat ed
     glEnableClientState( GL_VERTEX_ARRAY );
     glEnableClientState(GL_COLOR_ARRAY);
     glVertexPointer( 3, GL_FLOAT, 0, vertices );
-    glColorPointer(3, GL_FLOAT, 0, colour); //Buffer de color
+    glColorPointer(3, GL_FLOAT, 0, colour_purple); //Buffer de color
     glDrawArrays( GL_QUADS, 0, 24 );
     glDisableClientState( GL_VERTEX_ARRAY );
     glDisableClientState(GL_COLOR_ARRAY);
@@ -909,35 +816,35 @@ void piso( GLfloat centerPosX, GLfloat centerPosY, GLfloat centerPosZ, GLfloat e
         centerPosX + halfSideLength * size, centerPosY - halfSideLength - h2, centerPosZ + halfSideLength * size  // P6
     };
     GLfloat colour[] = {
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
+        0.58,1,0.50,
+        0.58,1,0.50,
+        0.58,1,0.50,
+        0.58,1,0.50,
         
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
+        0.58,1,0.50,
+        0.58,1,0.50,
+        0.58,1,0.50,
+        0.58,1,0.50,
         
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
+        0.58,1,0.50,
+        0.58,1,0.50,
+        0.58,1,0.50,
+        0.58,1,0.50,
         
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
+        0.58,1,0.50,
+        0.58,1,0.50,
+        0.58,1,0.50,
+        0.58,1,0.50,
         
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
+        0.58,1,0.50,
+        0.58,1,0.50,
+        0.58,1,0.50,
+        0.58,1,0.50,
         
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
-        255.0,255.0,255.0,
+        0.58,1,0.50,
+        0.58,1,0.50,
+        0.58,1,0.50,
+        0.58,1,0.50,
     };
     
 
